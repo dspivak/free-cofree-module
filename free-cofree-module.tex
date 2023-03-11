@@ -520,27 +520,26 @@ To obtain the comultiplication $\lim_ip\coh{i}\to\lim_{i_1,i_2}(p\coh{i_1}\tri p
 \end{align}
 where \eqref{eqn.induction} is $\varphi_{i_1,1+i_2}$ and it remains to construct \eqref{eqn.special}. Recall that $-\tri q$ preserves products for any $q$, so constructing \eqref{eqn.special} is equivalent to constructing two maps
 \[
-\yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\to p\coh{1+i_2}
+\yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\To{\phi\coh{i_1,i_2}} p\coh{1+i_2}
 \qqand
 \yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\to p\tri p\coh{i_1}\tri p\coh{1+i_2}.
 \]
-For the latter we use the second projection. For the former, we also use projections $p\coh{i_1}\to p\coh{0}=\yon$ and $\pi\coh{i_2}\colon p\coh{i_2+1}\to p\coh{i_2}$ to obtain:
+For the latter we use the second projection. The former, $\phi\coh{i_1,i_2}\colon p\coh{1+i_1+1+i_2}\to p\coh{1+i_2}$, is the more interesting one; for it we also use projections $p\coh{i_1}\to p\coh{0}=\yon$ and $\pi\coh{i_2}\colon p\coh{i_2+1}\to p\coh{i_2}$ to obtain:
 \[
 \yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\to
 \yon\times \left(p\tri\yon\tri p\coh{i_2}\right)\cong p\coh{1+i_2}
 \]
 We leave the naturality of this to the reader.
 
-It remains to check that $\epsilon$ and $\delta$ satisfy unitality and coassociativity. The base cases above imply unitality. Proving coassociativity amounts to proving that the following square commutes for any $i,j$:
+It remains to check that $\epsilon$ and $\delta$ satisfy unitality and coassociativity. The base cases above imply unitality. Proving coassociativity amounts to proving that the following diagram commutes:
 \[
-\begin{tikzcd}[column sep=45pt]
-	p\coh{1+i+1+j}\ar[r, "\pi\coh{i+1+j}"]\ar[d, "\varphi_{1+i,1+j}"']&
-	p\coh{i+1+j}\ar[d, "\varphi_{i,1+j}"]\\
-	p\coh{1+i}\tri p\coh{1+j}\ar[r, "\pi\coh{i}\tri p\coh{1+j}"']&
-	p\coh{i}\tri p\coh{1+j}
+\begin{tikzcd}[column sep=50pt]
+	p\coh{1+i_1+1+i_2+1+i_3}\ar[r, "\phi\coh{i_1,i_2+1+i_3}"]\ar[d, "\phi\coh{i_1+1+i_2,i_3}"']&
+	p\coh{1+i_2+1+i_3}\ar[d, "\phi\coh{i_2,i_3}"]\\
+	p\coh{1+i_3}\ar[r,equal]&p\coh{1+i_3}
 \end{tikzcd}
 \]
-which we again leave to the reader.
+This can be shown by induction on $i_3$.
 \end{proof}
 
 %-------- Chapter --------%
