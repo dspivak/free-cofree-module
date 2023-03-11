@@ -1,0 +1,554 @@
+\documentclass[11pt, one side, article]{memoir}
+
+
+\settrims{0pt}{0pt} % page and stock same size
+\settypeblocksize{*}{34.5pc}{*} % {height}{width}{ratio}
+\setlrmargins{*}{*}{1} % {spine}{edge}{ratio}
+\setulmarginsandblock{.98in}{.98in}{*} % height of typeblock computed
+\setheadfoot{\onelineskip}{2\onelineskip} % {headheight}{footskip}
+\setheaderspaces{*}{1.5\onelineskip}{*} % {headdrop}{headsep}{ratio}
+\checkandfixthelayout
+
+
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+\usepackage[inline]{enumitem}
+\usepackage{ifthen}
+\usepackage[utf8]{inputenc} %allows non-ascii in bib file
+\usepackage{xcolor}
+
+\usepackage[backend=biber, backref=true, maxbibnames = 10, style = alphabetic]{biblatex}
+\usepackage[bookmarks=true, colorlinks=true, linkcolor=blue!50!black,
+citecolor=orange!50!black, urlcolor=orange!50!black, pdfencoding=unicode]{hyperref}
+\usepackage[capitalize]{cleveref}
+
+\usepackage{tikz}
+
+\usepackage{amssymb}
+\usepackage{newpxtext}
+\usepackage[varg,bigdelims]{newpxmath}
+\usepackage{mathrsfs}
+\usepackage{dutchcal}
+\usepackage{fontawesome}
+
+
+
+% cleveref %
+  \newcommand{\creflastconjunction}{, and\nobreakspace} % serial comma
+  \crefformat{enumi}{\##2#1#3}
+  \crefalias{chapter}{section}
+
+
+% biblatex %
+  \addbibresource{Library20211112.bib} 
+
+% hyperref %
+  \hypersetup{final}
+
+% enumitem %
+  \setlist{nosep}
+  \setlistdepth{6}
+
+
+
+% tikz %
+
+
+
+  \usetikzlibrary{ 
+  	cd,
+  	math,
+  	decorations.markings,
+		decorations.pathreplacing,
+  	positioning,
+  	arrows.meta,
+  	shapes,
+		shadows,
+		shadings,
+  	calc,
+  	fit,
+  	quotes,
+  	intersections,
+    circuits,
+    circuits.ee.IEC
+  }
+  
+  \tikzset{
+biml/.tip={Glyph[glyph math command=triangleleft, glyph length=.95ex]},
+bimr/.tip={Glyph[glyph math command=triangleright, glyph length=.95ex]},
+}
+
+\tikzset{
+	tick/.style={postaction={
+  	decorate,
+    decoration={markings, mark=at position 0.5 with
+    	{\draw[-] (0,.4ex) -- (0,-.4ex);}}}
+  }
+} 
+\tikzset{
+	slash/.style={postaction={
+  	decorate,
+    decoration={markings, mark=at position 0.5 with
+    	{\draw[-] (.3ex,.3ex) -- (-.3ex,-.3ex);}}}
+  }
+} 
+
+\newcommand{\bito}[1][]{
+	\begin{tikzcd}[ampersand replacement=\&, cramped]\ar[r, biml-bimr, "#1"]\&~\end{tikzcd}  
+}
+\newcommand{\bifrom}[1][]{
+	\begin{tikzcd}[ampersand replacement=\&, cramped]\ar[r, bimr-biml, "{#1}"]\&~\end{tikzcd}  
+}
+\newcommand{\bifromlong}[2][]{
+	\begin{tikzcd}[ampersand replacement=\&, column sep=#2, cramped]\ar[r, bimr-biml, "#1"]\&~\end{tikzcd}  
+}
+
+% Adjunctions
+\newcommand{\adj}[5][30pt]{%[size] Cat L, Left, Right, Cat R.
+\begin{tikzcd}[ampersand replacement=\&, column sep=#1]
+  #2\ar[r, shift left=7pt, "#3"]
+  \ar[r, phantom, "\scriptstyle\Rightarrow"]\&
+  #5\ar[l, shift left=7pt, "#4"]
+\end{tikzcd}
+}
+
+\newcommand{\adjr}[5][30pt]{%[size] Cat R, Right, Left, Cat L.
+\begin{tikzcd}[ampersand replacement=\&, column sep=#1]
+  #2\ar[r, shift left=7pt, "#3"]\&
+  #5\ar[l, shift left=7pt, "#4"]
+  \ar[l, phantom, "\scriptstyle\Leftarrow"]
+\end{tikzcd}
+}
+
+\newcommand{\xtickar}[1]{\begin{tikzcd}[baseline=-0.5ex,cramped,sep=small,ampersand 
+replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
+\newcommand{\xslashar}[1]{\begin{tikzcd}[baseline=-0.5ex,cramped,sep=small,ampersand 
+replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
+
+
+
+  
+  % amsthm %
+\theoremstyle{definition}
+\newtheorem{definitionx}{Definition}[chapter]
+\newtheorem{examplex}[definitionx]{Example}
+\newtheorem{remarkx}[definitionx]{Remark}
+\newtheorem{notation}[definitionx]{Notation}
+
+
+\theoremstyle{plain}
+
+\newtheorem{theorem}[definitionx]{Theorem}
+\newtheorem{proposition}[definitionx]{Proposition}
+\newtheorem{corollary}[definitionx]{Corollary}
+\newtheorem{lemma}[definitionx]{Lemma}
+\newtheorem{warning}[definitionx]{Warning}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem*{corollary*}{Corollary}
+\newtheorem*{lemma*}{Lemma}
+\newtheorem*{warning*}{Warning}
+%\theoremstyle{definition}
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{construction}[theorem]{Construction}
+
+\newenvironment{example}
+  {\pushQED{\qed}\renewcommand{\qedsymbol}{$\lozenge$}\examplex}
+  {\popQED\endexamplex}
+  
+ \newenvironment{remark}
+  {\pushQED{\qed}\renewcommand{\qedsymbol}{$\lozenge$}\remarkx}
+  {\popQED\endremarkx}
+  
+  \newenvironment{definition}
+  {\pushQED{\qed}\renewcommand{\qedsymbol}{$\lozenge$}\definitionx}
+  {\popQED\enddefinitionx} 
+
+    
+%-------- Single symbols --------%
+	
+\DeclareSymbolFont{stmry}{U}{stmry}{m}{n}
+\DeclareMathSymbol\fatsemi\mathop{stmry}{"23}
+
+\DeclareFontFamily{U}{mathx}{\hyphenchar\font45}
+\DeclareFontShape{U}{mathx}{m}{n}{
+      <5> <6> <7> <8> <9> <10>
+      <10.95> <12> <14.4> <17.28> <20.74> <24.88>
+      mathx10
+      }{}
+\DeclareSymbolFont{mathx}{U}{mathx}{m}{n}
+\DeclareFontSubstitution{U}{mathx}{m}{n}
+\DeclareMathAccent{\widecheck}{0}{mathx}{"71}
+
+
+%-------- Renewed commands --------%
+
+\renewcommand{\ss}{\subseteq}
+
+%-------- Other Macros --------%
+
+
+\DeclarePairedDelimiter{\present}{\langle}{\rangle}
+\DeclarePairedDelimiter{\copair}{[}{]}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\corners}{\ulcorner}{\urcorner}
+\DeclarePairedDelimiter{\ihom}{[}{]}
+
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\Mor}{Mor}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\cod}{cod}
+\DeclareMathOperator{\idy}{idy}
+\DeclareMathOperator{\comp}{com}
+\DeclareMathOperator*{\colim}{colim}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\ob}{Ob}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\el}{El}
+
+
+
+
+\newcommand{\const}[1]{\texttt{#1}}%a constant, or named element of a set
+\newcommand{\Set}[1]{\mathsf{#1}}%a named set
+\newcommand{\ord}[1]{\mathsf{#1}}%an ordinal
+\newcommand{\cat}[1]{\mathcal{#1}}%a generic category
+\newcommand{\Cat}[1]{\mathbf{#1}}%a named category
+\newcommand{\fun}[1]{\mathrm{#1}}%a function
+\newcommand{\Fun}[1]{\mathrm{#1}}%a named functor
+
+
+
+
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\then}{\mathbin{\fatsemi}}
+
+\newcommand{\cocolon}{:\!}
+
+
+\newcommand{\iso}{\cong}
+\newcommand{\too}{\longrightarrow}
+\newcommand{\tto}{\rightrightarrows}
+\newcommand{\To}[2][]{\xrightarrow[#1]{#2}}
+\renewcommand{\Mapsto}[1]{\xmapsto{#1}}
+\newcommand{\Tto}[3][13pt]{\begin{tikzcd}[sep=#1, cramped, ampersand replacement=\&, text height=1ex, text depth=.3ex]\ar[r, shift left=2pt, "#2"]\ar[r, shift right=2pt, "#3"']\&{}\end{tikzcd}}
+\newcommand{\Too}[1]{\xrightarrow{\;\;#1\;\;}}
+\newcommand{\from}{\leftarrow}
+\newcommand{\ffrom}{\leftleftarrows}
+\newcommand{\From}[1]{\xleftarrow{#1}}
+\newcommand{\Fromm}[1]{\xleftarrow{\;\;#1\;\;}}
+\newcommand{\surj}{\twoheadrightarrow}
+\newcommand{\inj}{\rightarrowtail}
+\newcommand{\wavyto}{\rightsquigarrow}
+\newcommand{\lollipop}{\multimap}
+\newcommand{\imp}{\Rightarrow}
+\renewcommand{\iff}{\Leftrightarrow}
+\newcommand{\down}{\mathbin{\downarrow}}
+\newcommand{\fromto}{\leftrightarrows}
+\newcommand{\tickar}{\xtickar{}}
+\newcommand{\slashar}{\xslashar{}}
+
+
+
+\newcommand{\inv}{^{-1}}
+\newcommand{\op}{^\tn{op}}
+
+\newcommand{\tn}[1]{\textnormal{#1}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\ul}[1]{\underline{#1}}
+\newcommand{\wt}[1]{\widetilde{#1}}
+\newcommand{\wh}[1]{\widehat{#1}}
+\newcommand{\wc}[1]{\widecheck{#1}}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\newcommand{\dual}[1]{{#1}^\vee}
+
+
+
+\newcommand{\bb}{\mathbb{B}}
+\newcommand{\cc}{\mathbb{C}}
+\newcommand{\nn}{\mathbb{N}}
+\newcommand{\pp}{\mathbb{P}}
+\newcommand{\qq}{\mathbb{Q}}
+\newcommand{\zz}{\mathbb{Z}}
+\newcommand{\rr}{\mathbb{R}}
+
+
+\newcommand{\finset}{\Cat{Fin}}
+\newcommand{\smset}{\Cat{Set}}
+\newcommand{\smcat}{\Cat{Cat}}
+\newcommand{\catsharp}{\Cat{Cat}^{\sharp}}
+\newcommand{\ppolyfun}{\mathbb{P}\Cat{olyFun}}
+\newcommand{\ccatsharp}{\mathbb{C}\Cat{at}^{\sharp}}
+\newcommand{\ccatsharpdisc}{\mathbb{C}\Cat{at}^{\sharp}_{\tn{disc}}}
+\newcommand{\ccatsharplin}{\mathbb{C}\Cat{at}^{\sharp}_{\tn{lin}}}
+\newcommand{\ccatsharpdisccon}{\mathbb{C}\Cat{at}^{\sharp}_{\tn{disc,con}}}
+\newcommand{\sspan}{\mathbb{S}\Cat{pan}}
+
+\newcommand{\List}{\Fun{List}}
+\newcommand{\set}{\tn{-}\Cat{Set}}
+
+\newcommand{\plpl}{\mathbin{+\!\!+}}
+
+
+\newcommand{\yon}{\mathcal{y}}
+\newcommand{\poly}{\Cat{Poly}}
+\newcommand{\tri}{\mathbin{\triangleleft}}
+\newcommand{\tripow}[1]{^{\tri #1}}
+\newcommand{\free}{\mathfrak{m}}
+\newcommand{\cofree}{\mathfrak{c}}
+\newcommand{\Cofree}{\mathfrak{C}}
+\newcommand{\tree}{\Set{Tree}}
+
+\newcommand{\rt}{\texttt{root}}
+\newcommand{\br}{\tn{\texttt{branch}}}
+\newcommand{\hd}{\texttt{head}}
+\newcommand{\tl}{\texttt{tail}}
+
+% lenses
+\newcommand{\biglens}[2]{
+     \begin{bmatrix}{\vphantom{f_f^f}#2} \\ {\vphantom{f_f^f}#1} \end{bmatrix}
+}
+\newcommand{\littlelens}[2]{
+     \begin{bsmallmatrix}{\vphantom{f}#2} \\ {\vphantom{f}#1} \end{bsmallmatrix}
+}
+\newcommand{\lens}[2]{
+  \relax\if@display
+     \biglens{#1}{#2}
+  \else
+     \littlelens{#1}{#2}
+  \fi
+}
+
+
+
+\newcommand{\qand}{\quad\text{and}\quad}
+\newcommand{\qqand}{\qquad\text{and}\qquad}
+
+
+\newcommand{\coto}{\nrightarrow}
+\newcommand{\cofun}{{\raisebox{2pt}{\resizebox{2.5pt}{2.5pt}{$\setminus$}}}}
+\newcommand{\coh}[1]{^{(#1)}}
+
+\newcommand{\coalg}{\tn{-}\Cat{Coalg}}
+
+\newcommand{\bic}[2]{{}_{#1}\Cat{Comod}_{#2}}
+
+% ---- Changeable document parameters ---- %
+
+\linespread{1.1}
+%\allowdisplaybreaks
+\setsecnumdepth{section}
+\settocdepth{section}
+\setlength{\parindent}{15pt}
+\setcounter{tocdepth}{1}
+
+
+
+%--------------- Document ---------------%
+\begin{document}
+
+\title{The free monad monad as a module over\\the cofree comonad comonad in $\poly$}
+
+\author{David I. Spivak}
+
+\date{\vspace{-.2in}}
+
+\maketitle
+
+\begin{abstract}
+
+
+\smallskip
+
+\noindent
+\textbf{Keywords:} 
+\end{abstract}
+
+
+%-------- Chapter --------%
+\chapter{Introduction}
+
+%---- Section ----%
+\section{Notation for polynomial functors}
+
+$p(1)$.
+
+%-------- Chapter --------%
+\chapter{The cofree comonad comonad $\cofree$}
+
+%---- Section ----%
+\section{Behavior trees and initialized coalgebras}
+
+Let $p:\poly$ be a polynomial functor. To understand the cofree comonad $\cofree_p$ on it, one begins with the following definition.
+
+\begin{definition}
+Let $p:\poly$ be a polynomial functor. The set $\tree_p$ of \emph{$p$-behavior trees} is defined coinductively as follows. An element $T:\tree_p$ consists of a pair $(I,T.)$ where $I:p(1)$ is a position of $p$ and $T\then -\colon p[I]\to\tree_p$ is a function, i.e.\ for each $i:p[I]$ it returns $T\then i:\tree_p$. 
+We refer to $I$ as the \emph{root} of $T$ and denote it $T.\rt$, we write $T.\br\coloneqq p[I]$ and refer to each $i:T.\br$ as a \emph{$T$-branch}, the function $T\then-$ as the \emph{following function}, and the tree $T\then i$ as the \emph{$p$-behavior tree following $i$}.
+\end{definition}
+
+\begin{example}
+Here is a table of $\tree_p$'s for various polynomials arising from sets $A,B:\smset$.
+\[
+\begin{array}{l|l|l}
+p:\poly&\tree_p&\text{Comment}\\\hline
+A&A&\text{$A$-constant trees: $A$-many roots, no branches}\\
+A\yon&A^\nn&\text{$A$-Streams: $A$-many roots, one branch each}\\
+A\yon+B&A^\nn+B\List(A)&\text{$A$-streams that can terminate in a $B$}\\
+A\yon^B&A^{\List(B)}&\text{$B$-branching $A$-trees: print an $A$ and branch by $B$}
+\end{array}
+\]
+\end{example}
+
+\begin{definition}[Cofree category $\Cofree_p$]
+Let $p:\poly$ be a polynomial. Consider the graph with vertices $\tree_p$ and for any $T:\tree_p$ a single outgoing edge for each $i:T.\br$, whose target vertex is $T\then i$. Define the \emph{cofree category on $p$}, denoted $\Cofree_p$ to be the free category on that graph.
+
+For any $T:\ob(\Cofree_p)$, we denote the set of outgoing morphisms (paths in the underlying graph) by
+\[
+\Cofree_p[T]\coloneqq\sum_{T':\tree_p}\Cofree_p(T,T').
+\qedhere
+\]
+\end{definition}
+
+The following is straightforward.
+\begin{lemma}
+Let $p:\poly$ and $T:\tree_p$ a $p$-behavior tree. Then an element of $\Cofree_p[T]$ can be identified with a list $(i_1,\cdots,i_n)$ where
+\[
+i_1:T.\br,\quad
+i_2:(T\then i_1).\br,\quad...\quad
+i_n:(T\then i_1\then\ldots\then i_{n-1}).\br.
+\]
+The codomain function $\cod\colon\Cofree_p[T]\to\tree_p$ acts on an element $\ell\coloneqq(i_1,\ldots,i_n):\Cofree_p[T]$ by 
+\[
+\cod\ell\coloneqq T\then i_1\then\cdots\then i_n.
+\]
+In particular, $\Cofree_p(T,T')\cong\{\ell\colon\Cofree_p[T]\mid\cod(\ell)=T'\}$. 
+
+The identity on $T$ is identified with the length-0 list $()$. Given morphisms $\ell\colon T\to T'$ and $\ell'\colon T'\to T''$ in $\Cofree_p$, their composite, denoted $(\ell\plpl\ell')\colon T\to T''$, is given by concatenation.
+\end{lemma}
+
+There is a map $T.\br\to\Cofree_p[T]$ given by sending branches to length-1 lists $i\mapsto (i)$. We will use $\cod$ and $\plpl$ to denote their restriction along this map. In particular, given $\ell\colon T\to T'$ and $i:T'.\br$, we denote their composite by $\ell\plpl i\coloneqq\ell\plpl(i)$.
+
+\begin{definition}
+A $p$-coalgebra is a pair $(S,f)$ where $S:\smset$ and $f\colon S\to p(S)$. We refer to elements $s:S$ as \emph{states}. Given a state $s:S$, we can identify $f(s):p(S)$ with a pair
+\[
+f(s)=(\hd_{f,s},\tl_{f,s}),\quad\text{where}\quad \hd_{f,s}:p(1)\text{ and } \tl_{f,s}\colon p[I]\to S
+\]
+
+We refer to a $p$-algebra equipped with a state $s:S$ as an \emph{intialized $p$-coalgebra} and denote it $(S,f,s)$.
+ 
+A \emph{morphism} of $p$-coalgebras $(S,f)\to(S',f')$ consists of a function $g\colon S\to S'$ such that the following diagram commutes:
+\[
+\begin{tikzcd}
+	S\ar[r, "f"]\ar[d, "g"']&p(S)\ar[d, "p(g)"]\\
+	S'\ar[r, "f'"']&p(S')
+\end{tikzcd}
+\]
+In particular, the following equations hold:
+\[
+(\hd_{f,s}=\hd_{f',g(s)}):p(1)
+\qqand
+(g\circ\tl_{f,s}=\tl_{f',g(s)})\colon p[\hd_{f,s}]\to S'.
+\]
+A \emph{morphism $(S,f,s)\to(S',f',s')$ of intitialized $p$-coalgebras} is a morphism $g$ of $p$-coalgebras, such that $g(s)=s'$. 
+
+We denote the category of $p$-coalgebras by $p\coalg$ and that of initialized $p$-coalgebras by $p\coalg_*$.
+\end{definition}
+
+\begin{proposition}
+There is a retraction of categories
+\[
+\tree_p\To{A} p\coalg_*\To{B}\tree_p,\]
+where $\tree_p:\smset$ is considered as a discrete category.
+\end{proposition}
+\begin{proof}
+Given a $p$-tree $T:\tree_p$, consider the set $\Cofree_p[T]:\smset$ of outgoing paths and the element $():\Cofree_p[T]$ given by the $0$-length path. Consider the function $(\cod,\plpl)\colon \Cofree_p[T]\to p(\Cofree_p[T])$, which sends $\ell$ to $(\cod\ell,i\mapsto \ell\plpl(i))$.
+Then
+\[A(T)\coloneqq(\Cofree_p[T],(\cod,\plpl),())\]
+is an initialized $p$-coalgebra.
+
+We now give a functor from $B\colon p\coalg$ to $\tree_p$. On objects, $B$ sends an initialized $p$-coalgebra $(S,f,s)$ to the $p$-behavior tree defined coinductively as
+\[
+	B(S,f,s)\coloneqq(\hd_{f,s},B(S,f,\tl_{f,s}))
+\]
+In other words, its root is $\hd_{f,s}:p(1)$ and for any branch $i:p[\hd_{f,s}]$, the $p$-behavior tree following $i$ is $B(S,f,\tl_{f,s}(i))$. Given a morphism $g\colon (S,f,s)\to (S',f',g(s))$, we show $B(S,f,s)=B(S',f',g(s))$ coinductively: the base case is $\hd_{f,s}=\hd_{f',s'}$ and the coinductive step is
+\[
+B(S,f,\tl_{f,s})=B(S',f',g\circ\tl_{f,s})=B(S',f',\tl_{f',g(s)}).
+\]
+Thus every morphism in $p\coalg_*$ is sent to an identity. 
+
+The composite of $A$ and $B$ is clearly identity on $\tree_p$ because $\hd_{(\cod,\plpl),()}=\cod()=T.\rt$ and $\tl_{(\cod,\plpl),()}(i)=()\plpl i=T\then i$.
+\end{proof}
+
+\begin{proposition}
+The functor $U\colon\catsharp\to\poly$ has a right adjoint which we denote $\cofree$:
+\[
+\adj{\catsharp}{U}{\cofree_-}{\poly}
+\]
+\end{proposition}
+\begin{proof}
+Given a polynomial $p$, define polynomials $p^{(i)}$ for $i\in\nn$ by
+\[
+  p\coh{0}\coloneqq\yon
+  \qqand
+  p\coh{1+i}\coloneqq\yon\times(p\tri p\coh{i})
+\]
+There is a projection map $\pi\coh{0}\colon p\coh{1}\to p\coh{0}$, and if $\pi\coh{i}\colon p\coh{1+i}\to p\coh{i}$ has been defined, then we can define $\pi\coh{1+i}\coloneqq \yon\times(p\tri\pi\coh{i})$. Now define the polynomial
+\[
+\cofree_p\coloneqq\lim\big(\cdots\To{\pi\coh{2}}p\coh{2}\To{\pi\coh{1}}p\coh{1}\To{\pi\coh{0}}p\coh{0}\big)
+\]
+
+This polynomial comes equipped with a counit $\cofree_p\to\yon=p\coh{0}$ given by the projection. We next construct the comultiplication $\cofree_p\to\cofree_p\tri\cofree_p$. Since $\tri$ commutes with connected limits, we have
+\[
+  \cofree_p\tri\cofree_p=
+  \left(\lim_{i_1}p\coh{i_1}\right)\tri\left(\lim_{i_2}p\coh{i_2}\right)=
+  \lim_{i_1,i_2}\left(p\coh{i_1}\tri p\coh{i_2}\right)
+\]
+To obtain the comultiplication $\lim_ip\coh{i}\to\lim_{i_1,i_2}(p\coh{i_1}\tri p\coh{i_2})$, it suffices to produce a natural choice of polynomial map $\varphi_{i_1,i_2}\colon p\coh{i_1+i_2}\to p\coh{i_1}\tri p\coh{i_2}$ for any $i_1,i_2:\nn$. When $i_1=0$ or $i_2=0$, we use the unit identity for $\tri$. By induction, assume given $\varphi_{i_1,1+i_2}$; we construct $\varphi_{1+i_1,1+i_2}$ as follows:
+\begin{align}
+\nonumber
+  p\coh{1+i_1,1+i_2}&=
+  \yon\times \left(p\tri p\coh{i_1,1+i_2}\right)\\&\to
+\label{eqn.induction}
+  \yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\\&\to
+\label{eqn.special}
+  \left(\yon\times p\tri p\coh{i_1}\right)\tri p\coh{1+i_2}\\&=
+\nonumber
+  p\coh{1+i_1}\tri p\coh{1+i_2}
+\end{align}
+where \eqref{eqn.induction} is $\varphi_{i_1,1+i_2}$ and it remains to construct \eqref{eqn.special}. Recall that $-\tri q$ preserves products for any $q$, so constructing \eqref{eqn.special} is equivalent to constructing two maps
+\[
+\yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\to p\coh{1+i_2}
+\qqand
+\yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\to p\tri p\coh{i_1}\tri p\coh{1+i_2}.
+\]
+For the latter we use the second projection. For the former, we also use projections $p\coh{i_1}\to p\coh{0}=\yon$ and $\pi\coh{i_2}\colon p\coh{i_2+1}\to p\coh{i_2}$ to obtain:
+\[
+\yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\to
+\yon\times \left(p\tri\yon\tri p\coh{i_2}\right)\cong p\coh{1+i_2}
+\]
+We leave the naturality of this to the reader.
+
+It remains to check that $\epsilon$ and $\delta$ satisfy unitality and coassociativity. The base cases above imply unitality. Proving coassociativity amounts to proving that the following square commutes for any $i,j$:
+\[
+\begin{tikzcd}[column sep=45pt]
+	p\coh{1+i+1+j}\ar[r, "\pi\coh{i+1+j}"]\ar[d, "\varphi_{1+i,1+j}"']&
+	p\coh{i+1+j}\ar[d, "\varphi_{i,1+j}"]\\
+	p\coh{1+i}\tri p\coh{1+j}\ar[r, "\pi\coh{i}\tri p\coh{1+j}"']&
+	p\coh{i}\tri p\coh{1+j}
+\end{tikzcd}
+\]
+which we again leave to the reader.
+\end{proof}
+
+%-------- Chapter --------%
+\chapter{The free monad monad $\free$}
+
+%-------- Chapter --------%
+\chapter{The module structure $\free_p\otimes\cofree_q\to\free[p\otimes q]$}
+
+
+\printbibliography
+\end{document}
