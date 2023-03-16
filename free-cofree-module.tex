@@ -483,9 +483,12 @@ The composite of $A$ and $B$ is clearly identity on $\tree_p$ because $\hd_{(\co
 \end{proof}
 
 \begin{proposition}
-The functor $U\colon\catsharp\to\poly$ has a right adjoint which we denote $\cofree$:
+There is a functor $\cofree_-\colon\poly\to\poly$ such that $\cofree_p$ has the structure of a $\tri$-comonoid for each $p:\poly$,
 \[
-\adj{\catsharp}{U}{\cofree_-}{\poly}
+\cofree_p\to\yon
+\qqand
+\cofree_p\to\cofree_p\tri\cofree_p.
+\qedhere
 \]
 \end{proposition}
 \begin{proof}
@@ -493,12 +496,12 @@ Given a polynomial $p$, define polynomials $p^{(i)}$ for $i\in\nn$ by
 \[
   p\coh{0}\coloneqq\yon
   \qqand
-  p\coh{1+i}\coloneqq\yon\times(p\tri p\coh{i})
+  p\coh{1+i}\coloneqq\yon\times\left(p\tri p\coh{i}\right)
 \]
 There is a projection map $\pi\coh{0}\colon p\coh{1}\to p\coh{0}$, and if $\pi\coh{i}\colon p\coh{1+i}\to p\coh{i}$ has been defined, then we can define $\pi\coh{1+i}\coloneqq \yon\times(p\tri\pi\coh{i})$. Now define the polynomial
-\[
+\begin{equation}\label{eqn.construct_cofree}
 \cofree_p\coloneqq\lim\big(\cdots\To{\pi\coh{2}}p\coh{2}\To{\pi\coh{1}}p\coh{1}\To{\pi\coh{0}}p\coh{0}\big)
-\]
+\end{equation}
 
 This polynomial comes equipped with a counit $\cofree_p\to\yon=p\coh{0}$ given by the projection. We next construct the comultiplication $\cofree_p\to\cofree_p\tri\cofree_p$. Since $\tri$ commutes with connected limits, we have
 \[
@@ -541,6 +544,45 @@ It remains to check that $\epsilon$ and $\delta$ satisfy unitality and coassocia
 \end{tikzcd}
 \]
 which we again leave to the reader.
+\end{proof}
+
+\begin{lemma}\label{lemma.copointed}
+The functor $\cofree_-\colon\poly\to\poly$ is a copointed endofunctor on $\poly$, i.e.\ there is a natural map in $\poly$:
+\[\epsilon_p\colon\cofree_p\to p.\]
+\end{lemma}
+\begin{proof}
+By construction \eqref{eqn.construct_cofree} we have projection map $\cofree_p\to p\coh{1}$, and we obtain $\epsilon$ by composing with the projection $p\coh{1}\cong\yon\times p\to p$.
+\end{proof}
+
+\begin{theorem}
+There is an adjunction
+\[
+\adj{\catsharp}{U}{\cofree_-}{\poly}
+\]
+where $U\colon\catsharp\to\poly$ is the forgetful functor $U(c,\epsilon,\delta)=c$.
+\end{theorem}
+\begin{proof}
+We will abuse notation and denote the comonoid $(c,\epsilon,\delta):\catsharp$ simply by its carrier $c$. Our job is to produce a natural isomorphism
+\[
+\catsharp(c,\cofree_p)\To{\cong}\poly(c,p).
+\]
+For the forwards direction, we  compose any cofunctor $c\coto\cofree_p$ with the copointing from \cref{lemma.copointed} to obtain a polynomial map $c\to p$. 
+
+For the backwards direction, suppose given a polynomial map $\varphi\colon c\to p$. Since $\cofree_p$ is constructed as a limit \eqref{eqn.construct_cofree}, if we can produce maps $\phi\coh{i}\colon c\to p\coh{i}$ for each $i:\nn$, commuting with the projections $\pi\coh{i}\colon p\coh{1+i}\to p\coh{i}$, then we will have a map $\phi\colon c\to\cofree_p$. Noting that $p\coh{0}=\yon$, we define
+\[
+\phi\coh{0}\coloneqq\epsilon
+\qqand
+\phi\coh{1}\coloneqq(\epsilon,\varphi)\colon c\to\yon\times p.
+\]
+Clearly, we have $\phi\coh{0}=\pi\coh{0}\circ\phi\coh{1}$. Now suppose given $\phi\coh{1+i}\colon c\to p\coh{1+i}$ satisfying $\phi\coh{i}=\pi\coh{i}\circ\phi\coh{1+i}$. Then we define $\phi\coh{i+2}$ as the composite
+\[
+c\To{(\epsilon,\delta)}\yon\times(c\tri c)\To{\yon\times(\varphi\tri\phi\coh{1+i})}\yon\times\left(p\tri p\coh{1+i}\right)=p\coh{2+i}
+\]
+and it again satisfies $\phi\coh{1+i}=\pi\coh{1+i}\circ\phi\coh{2+i}$. Thus we have constructed $\phi$.
+
+We need to show that the round-trips on $\catsharp(c,\cofree_p)$ and $\poly(c,p)$ are identities. The latter is straightforward. So suppose given a cofunctor $\psi\colon c\coto\cofree_p$, let $\varphi\coloneqq\epsilon\circ\psi$ and construct $\phi$ as above; it remains to verify that $\psi=^?\phi$.
+
+**
 \end{proof}
 
 %-------- Chapter --------%
