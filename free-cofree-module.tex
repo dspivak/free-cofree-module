@@ -504,6 +504,7 @@ There is a projection map $\pi\coh{0}\colon p\coh{1}\to p\coh{0}$, and if $\pi\c
 \begin{equation}\label{eqn.construct_cofree}
 \cofree_p\coloneqq\lim\big(\cdots\To{\pi\coh{2}}p\coh{2}\To{\pi\coh{1}}p\coh{1}\To{\pi\coh{0}}p\coh{0}\big)
 \end{equation}
+and we note that this construction $p\mapsto \cofree_p$ is natural in $p:\poly$.
 
 This polynomial comes equipped with a counit $\cofree_p\to\yon=p\coh{0}$ given by the projection. We next construct the comultiplication $\cofree_p\to\cofree_p\tri\cofree_p$. Since $\tri$ commutes with connected limits, we have
 \[
@@ -514,8 +515,8 @@ This polynomial comes equipped with a counit $\cofree_p\to\yon=p\coh{0}$ given b
 To obtain the comultiplication $\lim_ip\coh{i}\to\lim_{i_1,i_2}(p\coh{i_1}\tri p\coh{i_2})$, it suffices to produce a natural choice of polynomial map $\varphi_{i_1,i_2}\colon p\coh{i_1+i_2}\to p\coh{i_1}\tri p\coh{i_2}$ for any $i_1,i_2:\nn$. When $i_1=0$ or $i_2=0$, we use the unit identity for $\tri$. By induction, assume given $\varphi_{i_1,1+i_2}$; we construct $\varphi_{1+i_1,1+i_2}$ as follows:
 \begin{align}
 \nonumber
-  p\coh{1+i_1,1+i_2}&=
-  \yon\times \left(p\tri p\coh{i_1,1+i_2}\right)\\&\to
+  p\coh{1+i_1+1+i_2}&=
+  \yon\times \left(p\tri p\coh{i_1+1+i_2}\right)\\&\to
 \label{eqn.induction}
   \yon\times \left(p\tri p\coh{i_1}\tri p\coh{1+i_2}\right)\\&\to
 \label{eqn.special}
@@ -547,14 +548,6 @@ It remains to check that $\epsilon$ and $\delta$ satisfy unitality and coassocia
 This can be shown by induction on $i_3$.
 \end{proof}
 
-\begin{lemma}\label{lemma.copointed}
-The functor $\cofree_-\colon\poly\to\poly$ is a copointed endofunctor on $\poly$, i.e.\ there is a natural map in $\poly$:
-\[\epsilon_p\colon\cofree_p\to p.\]
-\end{lemma}
-\begin{proof}
-By construction \eqref{eqn.construct_cofree} we have projection map $\cofree_p\to p\coh{1}$, and we obtain $\epsilon$ by composing with the projection $p\coh{1}\cong\yon\times p\to p$.
-\end{proof}
-
 \begin{theorem}
 There is an adjunction
 \[
@@ -563,34 +556,44 @@ There is an adjunction
 where $U\colon\catsharp\to\poly$ is the forgetful functor $U(c,\epsilon,\delta)=c$.
 \end{theorem}
 \begin{proof}
-We will abuse notation and denote the comonoid $(c,\epsilon,\delta):\catsharp$ simply by its carrier $c$. Our job is to produce a natural isomorphism
+We will abuse notation and denote the comonoid $(c,\epsilon,\delta):\catsharp$ simply by its carrier $c$. We first provide the counit and unit of the desired adjunction. The counit
 \[
-\catsharp(c,\cofree_p)\To{\cong}\poly(c,p).
+\epsilon_p\colon\cofree_p\to p
 \]
-For the forwards direction, we  compose any cofunctor $c\coto\cofree_p$ with the copointing from \cref{lemma.copointed} to obtain a polynomial map $c\to p$. 
-
-For the backwards direction, suppose given a polynomial map $\varphi\colon c\to p$. Since $\cofree_p$ is constructed as a limit \eqref{eqn.construct_cofree}, if we can produce maps $\phi\coh{i}\colon c\to p\coh{i}$ for each $i:\nn$, commuting with the projections $\pi\coh{i}\colon p\coh{1+i}\to p\coh{i}$, then we will have a map $\phi\colon c\to\cofree_p$. Noting that $p\coh{0}=\yon$, we define
+is given by composing the projection map $\cofree_p\to p\coh{1}$ from construction \eqref{eqn.construct_cofree} with the projection $p\coh{1}\cong\yon\times p\to p$. Since $\cofree_c$ is defined as a limit, the unit
 \[
-\phi\coh{0}\coloneqq\epsilon
-\qqand
-\phi\coh{1}\coloneqq(\epsilon,\varphi)\colon c\to\yon\times p.
+\eta_p\colon c\coto\cofree_c
 \]
-Clearly, we have $\phi\coh{0}=\pi\coh{0}\circ\phi\coh{1}$. Now suppose given $\phi\coh{1+i}\colon c\to p\coh{1+i}$ satisfying $\phi\coh{i}=\pi\coh{i}\circ\phi\coh{1+i}$. Then we define $\phi\coh{i+2}$ as the composite
+will be given by defining maps $\eta\coh{i}\colon c\to c\coh{i}$ commuting with the projections $\pi\coh{i}\colon c\coh{1+i}\to c\coh{i}$, for each $i:\nn$, and then showing that the resulting polynomial map $\eta_p$ is indeed a cofunctor. Noting that $c\coh{0}=\yon$, we define
 \[
-c\To{(\epsilon,\delta)}\yon\times(c\tri c)\To{\yon\times(\varphi\tri\phi\coh{1+i})}\yon\times\left(p\tri p\coh{1+i}\right)=p\coh{2+i}
+\eta\coh{0}\coloneqq\epsilon
 \]
-and it again satisfies $\phi\coh{1+i}=\pi\coh{1+i}\circ\phi\coh{2+i}$. Thus we have constructed $\phi$.
+Given $\eta\coh{i}\colon c\to c\coh{i}$, we define $\eta\coh{1+i}$ as the composite
+\[
+c\To{(\epsilon,\delta)}\yon\times(c\tri c)\To{\yon\times(c\tri\eta\coh{i})}\yon\times\left(c\tri c\coh{i}\right)=c\coh{1+i}.
+\]
+Clearly, we have $\eta\coh{0}=\pi\coh{0}\circ\eta\coh{1}$. It is easy to check that if $\eta\coh{i}=\pi\coh{i}\circ\eta\coh{1+i}$ then $\eta\coh{1+i}=\pi\coh{1+i}\circ\eta\coh{2+i}$. Thus we have constructed a polynomial map $\eta\colon c\to \cofree_c$. It clearly commutes with the counit, so it suffices to show that $\eta$ commutes with the comultiplication, which amounts to showing that the following diagram commutes
+\[
+\begin{tikzcd}
+  c\ar[r, "\delta"]\ar[d, "{(\epsilon,\delta)}"']&[27pt]
+  c\tri c\ar[r, "{(\epsilon,\delta)\tri(\epsilon,\delta)}"]&[15pt]
+  \big(\yon\times(c\tri c)\big)\tri\big(\yon\times(c\tri c)\big)\ar[d, "{(\yon\times c\tri\eta\coh{i_1})\tri(\yon\times c\tri\eta\coh{i_2})}"]\\
+  \yon\times(c\tri c)\ar[r, "{\yon\times c\tri\eta\coh{i_1+1+i_2}}"']&
+  \yon\times(c\tri c\coh{i_1+1+i_2})\ar[r, "\varphi_{1+i_1,1+i_2}"']&
+  \big(\yon\times(c\tri c\coh{i_1})\big)\tri\big(\yon\times(c\tri c\coh{i_2})\big)
+\end{tikzcd}
+\]
+for all $i_1,i_2:\nn$, where $\varphi_{1+i_1,1+i_2}$ is the map constructed in \cref{eqn.induction,eqn.special}. Commutativity follows from the counitality and coassociativity of the comonoid $c$.
 
-We need to show that the round-trips on $\catsharp(c,\cofree_p)$ and $\poly(c,p)$ are identities. The latter is straightforward. So suppose given a cofunctor $\psi\colon c\coto\cofree_p$, let $\varphi\coloneqq\epsilon\circ\psi$ and construct $\phi$ as above; it remains to verify that $\psi=^?\phi$.
-
-**
+The triangle identities **
 \end{proof}
+
 
 %-------- Chapter --------%
 \chapter{The free monad monad $\free$}
 
 %-------- Chapter --------%
-\chapter{The module structure $\free_p\otimes\cofree_q\to\free[p\otimes q]$}
+\chapter{The module structure $\free_p\otimes\cofree_q\to\free_{p\otimes q}$}
 
 
 \printbibliography
