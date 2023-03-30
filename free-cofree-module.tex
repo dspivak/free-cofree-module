@@ -32,7 +32,10 @@ citecolor=orange!50!black, urlcolor=orange!50!black, pdfencoding=unicode]{hyperr
 \usepackage{dutchcal}
 \usepackage{fontawesome}
 
+% xcolor %
 
+\definecolor{dgreen}{rgb}{0.0, 0.5, 0.3} 
+\definecolor{dyellow}{rgb}{8.0, 0.74, 0}
 
 % cleveref %
   \newcommand{\creflastconjunction}{, and\nobreakspace} % serial comma
@@ -49,6 +52,7 @@ citecolor=orange!50!black, urlcolor=orange!50!black, pdfencoding=unicode]{hyperr
 % enumitem %
   \setlist{nosep}
   \setlistdepth{6}
+
 
 
 
@@ -93,6 +97,20 @@ bimr/.tip={Glyph[glyph math command=triangleright, glyph length=.95ex]},
     	{\draw[-] (.3ex,.3ex) -- (-.3ex,-.3ex);}}}
   }
 } 
+
+\tikzset{trees/.style={
+	inner sep=0, 
+	minimum width=0, 
+	minimum height=0,
+	level distance=.75cm, 
+	sibling distance=.5cm,
+%	every child/.style={fill},
+	edge from parent/.style={shorten <= 2pt, draw, ->},
+	grow'=up,
+	decoration={markings, mark=at position 0.75 with \arrow{stealth}}
+	}
+}
+
 
 \newcommand{\bito}[1][]{
 	\begin{tikzcd}[ampersand replacement=\&, cramped]\ar[r, biml-bimr, "#1"]\&~\end{tikzcd}  
@@ -322,6 +340,7 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
   \fi
 }
 
+\newcommand{\myred}[1]{{\color{red!80!black}#1}}
 
 
 \newcommand{\qand}{\quad\text{and}\quad}
@@ -371,7 +390,106 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 %-------- Chapter --------%
 \chapter{Introduction}
 
-See Phil Freeman, \href{https://functorial.com/the-future-is-comonadic/main.pdf}{Declarative UIs are the Future — And the Future is Comonadic!}.
+Both the free monad construction $\free$ and the cofree comonad construction $\cofree$ are functors endofunctors $\poly\to\poly$ on the category of polynomial functors; each is fascinating in its own right, and the two constructions are related in surprising ways. Both have something to do with trees. Given a polynomial $p:\poly$, the free monad $\free_p$ on $p$ is something like an operad, whereas the cofree comonad $\cofree_p$ is a category.
+
+To begin to get a handle on these, one might think of $\free_p$ in terms of syntax trees. For example, suppose $p$ is given by
+\[
+p\coloneqq\{\myred{+}, \myred{\times}\}\yon^2+\{\myred{-}\}\yon+\{\myred{0},\myred{1}\}
+\]
+Then an example element of $\free_p(0)$ is the following tree:
+\[
+\begin{tikzpicture}[trees,
+  level 1/.style={sibling distance=10mm},
+  level 2/.style={sibling distance=5mm},
+  level 3/.style={sibling distance=2.5mm}]
+	\node (a) {$\myred{\times}$}
+		child {node {$\myred{+}$}
+			child {node {$\myred{1}$}}
+			child {node {$\myred{1}$}}
+		}
+		child {node {$\myred{1}$}}
+		;
+\end{tikzpicture}
+\]
+which represents the expression $(1+1)\times 1$. By Lambek's theorem there is a function $\free_p(0)\to\cofree_p(1)$, and this function is injective, so we can also see any syntax tree as an element of $\cofree_p(1)$ as well. However, more general elements of $\cofree_p(1)$ may have infinite height. We will explain in the next section. 
+
+In fact, the free monad construction $p\mapsto\free_p$ is itself a monad on $\poly$. That is, there are natural unit and multiplication maps
+\[
+	\eta_p\colon p\to\free_p
+	\qqand
+	\mu_p\colon \free_{\free_p}\to\free_p,
+\]
+satisfying the usual monad laws. Similarly, the cofree comonad construction $p\to\cofree_p$ is itself a comonad on $\poly$, meaning there are natural counit and comultiplication maps
+\[
+	\epsilon_p\colon\cofree_p\to p
+	\qqand
+	\delta_p\colon\cofree_p\to\cofree_{\cofree_p},
+\]
+satisfying the usual comonad laws. Moreover, $\cofree$ is lax monoidal on $(\poly,\yon,\otimes)$ with unitor and productor denoted:
+\[
+  \upsilon\colon\yon\to\cofree_\yon
+  \qqand
+	\pi_{p,q}\colon\cofree_p\otimes\cofree_q\to\cofree_{p\otimes q}.
+\]
+
+The above is well-known. In this note, we provide what appears to be a novel relationship between the two constructions and the Dirichlet tensor product $\otimes$ on $\poly$. In particular, for any polynomials $p,q$, there is a natural map
+\[
+  \Phi_{p,q}\colon\free_p\otimes\cofree_q\to\free_{p\otimes q}
+\]
+This map presents $\free$ as a \emph{module} over $\cofree$, as \cite{https://ncatlab.org/nlab/show/module+over+a+monoidal+functor}, because it satisfies the action laws for $\cofree$'s lax monoidal structure ($\upsilon,\pi$):
+%\[
+%\begin{tikzcd}
+%	\free_p\otimes\yon\ar[r,equal]\ar[d, "\free_p\otimes\upsilon"']&
+%	\free_p\ar[d, equal]\\
+%	\free_p\otimes\cofree_\yon\ar[r, "\Phi_{p,\yon}"']&
+%	\free_{p\otimes\yon}
+%\end{tikzcd}
+%\hspace{.6in}
+%\begin{tikzcd}[column sep=large]
+%	\free_p\otimes\cofree_q\otimes\cofree_{q'}\ar[r, "\Phi_{p,q}\otimes\cofree_{q'}"]\ar[d, "\free_p\otimes\pi_{q,q'}"']&
+%	\free_{p\otimes q}\otimes\cofree_{q'}\ar[d, "\Phi_{p\otimes q,q'}"]\\
+%	\free_p\otimes\cofree_{q\otimes q'}\ar[r, "\Phi_{p,q\otimes q'}"']&
+%	\free_{p\otimes q\otimes q'}
+%\end{tikzcd}
+%\]
+\[
+\begin{tikzcd}
+	\free_p\otimes\yon\ar[r,equal]\ar[d]&
+	\free_p\ar[d, equal]\\
+	\free_p\otimes\cofree_\yon\ar[r]&
+	\free_{p\otimes\yon}
+\end{tikzcd}
+\hspace{.6in}
+\begin{tikzcd}[column sep=large]
+	\free_p\otimes\cofree_q\otimes\cofree_{q'}\ar[r]\ar[d]&
+	\free_{p\otimes q}\otimes\cofree_{q'}\ar[d]\\
+	\free_p\otimes\cofree_{q\otimes q'}\ar[r]&
+	\free_{p\otimes q\otimes q'}
+\end{tikzcd}
+\]
+But it also satisfies additional coherence laws for interactions between $\eta_p$ and $\epsilon_q$ and between $\mu_p$ and $\delta_q$:
+\[
+\begin{tikzcd}
+  p\otimes\cofree_q\ar[r]\ar[d]&p\otimes q\ar[d]\\
+  \free_p\otimes\cofree_q\ar[r]&\free_{p\otimes q}
+\end{tikzcd}
+\hspace{.6in}
+\begin{tikzcd}
+	\free_{\free_p}\otimes\cofree_q\ar[d]\ar[r]&
+	\free_{\free_p}\otimes\cofree_{\cofree_q}\ar[r]&
+	\free_{\free_p\otimes\cofree_q}\ar[r]&
+	\free_{\free_{p\otimes q}}\ar[d]\\
+	\free_p\otimes\cofree_q\ar[rrr]&&&
+	\free_{p\otimes q}
+\end{tikzcd}
+\]
+
+
+The above is all quite abstract, until when one considers it in terms of trees. The map $\Phi_{p,q}$ can be understood as follows:...
+
+
+
+Moore machines and Mealy machines....
 
 %---- Section ----%
 \section{Notation for polynomial functors}
