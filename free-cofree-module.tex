@@ -44,7 +44,7 @@ citecolor=orange!50!black, urlcolor=orange!50!black, pdfencoding=unicode]{hyperr
 
 
 % biblatex %
-  \addbibresource{Library20211112.bib} 
+  \addbibresource{Library20230428.bib} 
 
 % hyperref %
   \hypersetup{final}
@@ -322,6 +322,8 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 \newcommand{\cofree}{\mathfrak{c}}
 \newcommand{\Cofree}{\mathfrak{C}}
 \newcommand{\tree}{\Set{Tree}}
+\newcommand{\diag}{\Cat{Diag}}
+\newcommand{\VEF}{\Cat{VEF}}
 
 \newcommand{\rt}{\texttt{root}}
 \newcommand{\br}{\tn{\texttt{branch}}}
@@ -499,6 +501,11 @@ Moore machines and Mealy machines....
 \section{Notation for polynomial functors}
 
 $p(1)$.
+
+\section*{Acknowledgments}
+The author thanks Brandon Shapiro for many useful conversations.
+
+This material is based upon work supported by the Air Force Office of Scientific Research under award number FA9550-20-1-0348.
 
 %-------- Chapter --------%
 \chapter{The cofree comonad comonad $\cofree$}
@@ -746,7 +753,7 @@ and the lower map is the coproduct, taken over all $I:p(1)$, of the correspondin
 Note that $p+q$ and $p\tri q$ are finitary if $p$ and $q$ are, and that the colimit of finitary polynomials is again finitary.
 
 
-\begin{proposition}
+\begin{proposition}\label{prop.free_monad_fin}
 There is a functor $\free_-\colon\polyfin\to\polyfin$ such that $\free_p$ has the structure of a Cartesian $\tri$-monoid for each finitary $p:\polyfin$,
 \[
 \yon\to\free_p
@@ -796,12 +803,12 @@ It remains to check that $\eta$ and $\mu$ satisfy unitality and associativity. T
 This is shown by a straightforward induction on $i_1$.
 \end{proof}
 
-Let $\Mod(\polyfin)$ denote the category monoids in $(\polyfin,\yon,\tri)$; we refer to its objects as \emph{finitary polynomial monads} or simply \emph{monads}.
+Let $\Mod(\polyfin)$ denote the category monoids in $(\polyfin,\yon,\tri)$; we refer to its objects as \emph{finitary polynomial monads} or simply \emph{monads}. Note that we are not asking objects or morphisms in $\Mod(\polyfin)$, or later $\Mod(\poly)$ to be cartesian; that is a property we will specify explicitly when present.
 
-\begin{lemma}
+\begin{lemma}\label{lemma.free_polyfin}
 There is an adjunction
 \[
-\adj{\poly}{\free_-}{U}{\Mod(\polyfin)}
+\adj{\polyfin}{\free_-}{U}{\Mod(\polyfin)}
 \]
 where $U\colon\Mod(\polyfin)\to\poly$ is the forgetful functor $U(m,\eta,\mu)\coloneqq m$.
 \end{lemma}
@@ -830,9 +837,54 @@ Clearly, we have $\epsilon\hoc{0}=\epsilon\hoc{1}\circ\iota\hoc{0}$. It is easy 
 
 In the previous section we computed $\free_p$ for a finitary polynomial $p:\polyfin$. In this section, we extend the construction to an arbitrary polynomial.
 
-\begin{lemma}
-
+\begin{lemma}\label{lemma.vert_lim}
+Every polynomial is canonically isomorphic to the limit of its vertical maps to finitary polynomials.
 \end{lemma}
+\begin{proof}
+Let $p$ be a polynomial, and consider the comma category
+\[\VEF_p\coloneqq(\{p\}\down\polyfin^\tn{vert}),\]
+of vertical epimorphisms $p\to q$ with $q$ finitary; its objects are polynomials $q$ with the same positions as $p$ and for each $I:p(1)$ a subset $q[I]\ss p[I]$ of the directions. It comes with a functor $\VEF_p\to\poly$ sending $(p\to q)\mapsto q$. There is an orthogonal factorization system on $\poly$ whose left class is vertical epimorphisms. Given an arbitrary map $\varphi\colon p\to p'$ of polynomials, we can take any map $p'\to q'$ and consider the vertical-epimorphic part of the composite $p\to p'\to q'$. Thus we have a diagram of the following form:
+\[
+\begin{tikzcd}[column sep=0pt]
+	\VEF_p\ar[dr, "" name=p]&&\VEF_{p'}\ar[dl, ""' name=p']\ar[ll]\\&
+	\poly
+	\ar[from=p, to=p', Rightarrow]
+\end{tikzcd}
+\]
+These are precisely the morphisms in the category $\diag_\circ(\poly)$ \cite{peschke2021diagrams}, hence we have a functor $\VEF\colon\poly\to\diag_\circ(\poly)$. Since $\poly$ is complete, taking limits defines a functor $\lim\colon\diag_\circ(\poly)\to\poly$. 
+
+We claim that the composite $\poly\to\diag_\circ(\poly)\to\poly$ is naturally isomorphic to the identity. Since $\poly$ (resp.\ $\polyfin$) is the coproduct completion of $\smset\op$ (resp.\ $\finset\op$), this amounts to the fact that $\finset\to\smset$ is dense, i.e.\ that every set is the colimit of finite sets. 
+\end{proof}
+
+\begin{proposition}
+There is a functor $\free_-\colon\poly\to\poly$ such that $\free_p$ has the structure of a Cartesian $\tri$-monoid for each finitary $p:\poly$,
+\[
+\yon\to\free_p
+\qqand
+\free_p\tri\free_p\to\free_p.
+\qedhere
+\]
+\end{proposition}
+\begin{proof}
+For $p:\poly$, the functor $\VEF_p\to\poly$ from \cref{lemma.vert_lim} factors through $\VEF_p\to\polyfin$. Composing with $\free_-\colon\polyfin\to\Mod(\polyfin)$ from \cref{lemma.free_polyfin} gives a functor $\VEF_p\to\Mod(\polyfin)$,
+sending each $p\to q$ to the monad $(\free_q,\eta_q,\mu_q)$. Define the polynomial
+\[\free_p\coloneqq\lim_{(p\to q)\in\VEF_p}\free_q.\]
+We will define a unit $\yon\to\free_p$ and a multiplication $\free_p\tri\free_p\to\free_p$ satisfying the usual laws. 
+
+The maps $\eta_q\colon\yon\to\free_q$ assemble into a map to their limit
+\[
+  \eta\colon\yon\To{(\eta_q)_{q:\VEF_p}}
+  \left(\lim_{q:\VEF_p}\free_q\right)=
+  \free_p
+\]
+and one checks by hand that $\eta$ is cartesian. We next claim that there are isomorphisms
+\begin{align*}
+	\free_p\tri\free_p&\coloneqq
+  \left(\lim_{q:\VEF_p}\free_q\right)\tri\left(\lim_{q':\VEF_p}\free_{q'}\right)\\&\cong
+  \lim_{q:\VEF_p}\lim_{q':\VEF_p}\free_q\tri\free_{q'}\\&\cong
+  \lim_{q:\VEF_p}\free_q\tri\free_q
+\end{align*}
+\end{proof}
 
 %-------- Chapter --------%
 \chapter{The module structure $\free_p\otimes\cofree_q\to\free_{p\otimes q}$}
