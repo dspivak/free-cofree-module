@@ -304,6 +304,7 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 \newcommand{\ccatsharplin}{\mathbb{C}\Cat{at}^{\sharp}_{\tn{lin}}}
 \newcommand{\ccatsharpdisccon}{\mathbb{C}\Cat{at}^{\sharp}_{\tn{disc,con}}}
 \newcommand{\sspan}{\mathbb{S}\Cat{pan}}
+\newcommand{\polyfin}{\poly_{\finset}}
 
 \newcommand{\List}{\Fun{List}}
 \newcommand{\set}{\tn{-}\Cat{Set}}
@@ -350,6 +351,7 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 \newcommand{\coto}{\nrightarrow}
 \newcommand{\cofun}{{\raisebox{2pt}{\resizebox{2.5pt}{2.5pt}{$\setminus$}}}}
 \newcommand{\coh}[1]{^{(#1)}}
+\newcommand{\hoc}[1]{_{(#1)}}
 
 \newcommand{\coalg}{\tn{-}\Cat{Coalg}}
 
@@ -510,7 +512,7 @@ We refer to $I$ as the \emph{root} of $T$ and denote it $T.\rt$, we write $T.\br
 \end{definition}
 
 \begin{example}
-Here is a table of $\tree_p$'s for various polynomials arising from sets $A,B:\smset$.
+Here is a table of $\tree_p$'s for various polynomials $p$ arising from sets $A,B:\smset$.
 \[
 \begin{array}{l|l|l}
 p:\poly&\tree_p&\text{Comment}\\\hline
@@ -624,10 +626,10 @@ There is a projection map $\pi\coh{0}\colon p\coh{1}\to p\coh{0}$, and if $\pi\c
 \end{equation}
 and we note that this construction $p\mapsto \cofree_p$ is natural in $p:\poly$.
 
-This polynomial comes equipped with a counit $\cofree_p\to\yon=p\coh{0}$ given by the projection. We next construct the comultiplication $\cofree_p\to\cofree_p\tri\cofree_p$. Since $\tri$ commutes with connected limits, we have
+This polynomial comes equipped with a counit $\epsilon\colon\cofree_p\to\yon=p\coh{0}$ given by the projection. We next construct the comultiplication $\delta\colon\cofree_p\to\cofree_p\tri\cofree_p$. Since $\tri$ commutes with connected limits, we have
 \[
   \cofree_p\tri\cofree_p=
-  \left(\lim_{i_1}p\coh{i_1}\right)\tri\left(\lim_{i_2}p\coh{i_2}\right)=
+  \left(\lim_{i_1}p\coh{i_1}\right)\tri\left(\lim_{i_2}p\coh{i_2}\right)\cong
   \lim_{i_1,i_2}\left(p\coh{i_1}\tri p\coh{i_2}\right)
 \]
 To obtain the comultiplication $\lim_ip\coh{i}\to\lim_{i_1,i_2}(p\coh{i_1}\tri p\coh{i_2})$, it suffices to produce a natural choice of polynomial map $\varphi_{i_1,i_2}\colon p\coh{i_1+i_2}\to p\coh{i_1}\tri p\coh{i_2}$ for any $i_1,i_2:\nn$. When $i_1=0$ or $i_2=0$, we use the unit identity for $\tri$. By induction, assume given $\varphi_{i_1,1+i_2}$; we construct $\varphi_{1+i_1,1+i_2}$ as follows:
@@ -671,7 +673,7 @@ There is an adjunction
 \[
 \adj{\catsharp}{U}{\cofree_-}{\poly}
 \]
-where $U\colon\catsharp\to\poly$ is the forgetful functor $U(c,\epsilon,\delta)=c$.
+where $U\colon\catsharp\to\poly$ is the forgetful functor $U(c,\epsilon,\delta)\coloneqq c$.
 \end{theorem}
 \begin{proof}
 We will abuse notation and denote the comonoid $(c,\epsilon,\delta):\catsharp$ simply by its carrier $c$. We first provide the counit and unit of the desired adjunction. The counit
@@ -680,9 +682,9 @@ We will abuse notation and denote the comonoid $(c,\epsilon,\delta):\catsharp$ s
 \]
 is given by composing the projection map $\cofree_p\to p\coh{1}$ from construction \eqref{eqn.construct_cofree} with the projection $p\coh{1}\cong\yon\times p\to p$. Since $\cofree_c$ is defined as a limit, the unit
 \[
-\eta_p\colon c\coto\cofree_c
+\eta_c\colon c\coto\cofree_c
 \]
-will be given by defining maps $\eta\coh{i}\colon c\to c\coh{i}$ commuting with the projections $\pi\coh{i}\colon c\coh{1+i}\to c\coh{i}$, for each $i:\nn$, and then showing that the resulting polynomial map $\eta_p$ is indeed a cofunctor. Noting that $c\coh{0}=\yon$, we define
+will be given by defining maps $\eta\coh{i}\colon c\to c\coh{i}$ commuting with the projections $\pi\coh{i}\colon c\coh{1+i}\to c\coh{i}$, for each $i:\nn$, and then showing that the resulting polynomial map $\eta_c$ is indeed a cofunctor. Noting that $c\coh{0}=\yon$, we define
 \[
 \eta\coh{0}\coloneqq\epsilon
 \]
@@ -703,12 +705,95 @@ Clearly, we have $\eta\coh{0}=\pi\coh{0}\circ\eta\coh{1}$. It is easy to check t
 \]
 for all $i_1,i_2:\nn$, where $\varphi_{1+i_1,1+i_2}$ is the map constructed in \cref{eqn.induction,eqn.special}. Commutativity follows from the counitality and coassociativity of the comonoid $c$.
 
-The triangle identities **
+The triangle identities are straightforward as well. Indeed, for any comonoid $c:\catsharp$, the composite $c\To{U\circ\eta_c} \cofree_c\To{\epsilon_{Uc}} c$ is equal to the composite of $c\To{(\epsilon,c)}c\coh{1}=\yon\times c$, with the projection $c\coh{1}\to c$, the result of which is the identity. Finally, for any polynomial $p:\poly$, the composite $\cofree_p\To{\eta_{\cofree_p}}\cofree_{\cofree_p}\To{\cofree_{\epsilon_p}}\cofree_p$ is given by taking a limit of maps of the form
+\[
+	\cofree_p\To{(\epsilon,\delta)}
+	\yon\times(\cofree_p\tri\cofree_p)\To{\yon\times(\cofree_p\tri\eta\coh{i})}
+	\yon\times(\cofree_p\tri\cofree_p\coh{i})\To{\yon\times(\epsilon_p\tri\epsilon_p\coh{i})}
+	\yon\times(p\tri p\coh{i})
+\]
+Each one is in fact the projection $\cofree_p\to p\coh{i+1}$, so the resulting map is the identity on $\cofree_p$, completing the proof.
 \end{proof}
 
 
 %-------- Chapter --------%
 \chapter{The free monad monad $\free$}
+
+\section{The free monad monad on finitary polynomials}
+
+\begin{definition}
+A functor $F\colon\smset\to\smset$ is called \emph{finitary} if it commutes with filtered colimits. A polynomial $p:\poly$ is called \emph{finitary} if the set $p[I]$ is finite for all $I:p(1)$. Let $\polyfin\ss\poly$ denote the full subcategory spanned by the finitary polynomials.
+\end{definition}
+
+\begin{lemma}
+A polynomial $p$ is finitary iff the corresponding functor $X\mapsto p\tri X$ is finitary.
+\end{lemma}
+\begin{proof}
+Since coproducts commute with filtered colimits, and $\poly$ is extensive, the following is a pullback for any $I:p(1)$,
+\[
+\begin{tikzcd}
+	\colim_{j:J}(\yon^{p[I]}\tri X_j)\ar[r]\ar[d]&
+	\yon^{p[I]}\tri\colim_{j:J}X_j\ar[d]\\
+	\colim_{j:J}(p\tri X_j)\ar[r]&
+	p\tri\colim_{j:J}X_j\ar[ul, phantom, very near end, "\lrcorner"]
+\end{tikzcd}
+\]
+and the lower map is the coproduct, taken over all $I:p(1)$, of the corresponding top maps. It follows that the bottom map is an iso iff the top map is for all $I:p(1)$. Thus $p$ is finitary as a functor iff for each $I:p(1)$, the map $X\mapsto X^{p[I]}$ is finitary. But $\yon^A\colon\smset\to\smset$ is finitary iff $A$ is finite because finite limits, hence finite products, commute with filtered colimits, and because not every map $A\to\nn$ factors through some finite stage $A\to N\to\nn$. This completes the proof.
+\end{proof}
+
+Note that $p+q$ and $p\tri q$ are finitary if $p$ and $q$ are, and that the colimit of finitary polynomials is again finitary.
+
+
+\begin{proposition}
+There is a functor $\free_-\colon\polyfin\to\polyfin$ such that $\free_p$ has the structure of a Cartesian $\tri$-monoid for each finitary $p:\polyfin$,
+\[
+\yon\to\free_p
+\qqand
+\free_p\tri\free_p\to\free_p.
+\qedhere
+\]
+\end{proposition}
+\begin{proof}
+For a finitary polynomial $p$, define polynomials $p\hoc{i}$ for $i\in\nn$ by
+\[
+p\hoc{0}\coloneqq\yon
+\qqand
+p\hoc{1+i}\coloneqq\yon+\left(p\tri p\hoc{i}\right)
+\]
+There is an inclusion map $\iota\hoc{0}\colon p\hoc{0}\to p\hoc{1}$, and if $\iota\hoc{i}\colon p\hoc{i}\to p\hoc{i+1}$ has been defined, then we can define $\iota\hoc{1+i}\coloneqq \yon+(p\tri\iota\hoc{i})$. Now define the polynomial
+\begin{equation}
+	\free_p\coloneqq\colim\left(\cdots\From{\iota\hoc{2}}p\hoc{2}\From{\iota\hoc{1}}p\hoc{1}\From{\iota\hoc{0}}p\hoc{0}\right)
+\end{equation}
+Note, by induction, that each $p\hoc{i}$ is finitary and that each $\iota\hoc{i}$ is cartesian, hence $\free_p$ is finitary and all maps $p\hoc{i}\to\free_p$ are cartesian. We refer to any composite of $\iota$'s as an $\iota$-inclusion.
+
+This polynomial comes equipped with a cartesian unit $\eta\colon\yon=p\hoc{0}\to\cofree_p$. We next construct the multiplication $\mu\colon\free_p\tri\free_p\to\free_p$. The $-\tri b$-operation preserves colimits of cartesian maps, and if $a$ is finitary the $a\tri-$ operation preserves filtered colimits. Hence we have
+\[
+	\free_p\tri\free_p=
+  \left(\colim_{i_1}p\hoc{i_1}\right)\tri\left(\colim_{i_2}p\hoc{i_2}\right)\cong
+  \colim_{i_1,i_2}\left(p\hoc{i_1}\tri p\hoc{i_2}\right).
+\]
+To obtain the multiplication map $\colim_{i_1,i_2}(p\hoc{i_1}\tri p\hoc{i_2})\to\colim_i p\hoc{i}$, it suffices to produce a natural choice of polynomial maps $\varphi_{i_1,i_2}\colon p\hoc{i_1}\tri p\hoc{i_2}\to p\hoc{i_1+i_2}$ for any $i_1,i_2:\nn$. When $i_1=0$ or $i_2=0$, we use the unit identity for $\tri$. By induction, assume given $\varphi_{i_1,i_2}$; we construct $\varphi_{1+i_1,i_2}$ as follows
+\begin{align*}
+	p\hoc{1+i_1}\tri p\hoc{i_2}&=
+	\left(\yon+p\tri p\hoc{i_1}\right)\tri p\hoc{i_2}\\&\cong
+	p\hoc{i_2}+p\tri p\hoc{i_1}\tri p\hoc{i_2}\\&\to
+	p\hoc{1+i_1+i_2}+p\tri p\hoc{i_1+i_2}\\&\to
+	p\hoc{1+i_1+i_2}
+\end{align*}
+where the penultimate map is an $\iota$-inclusion on the first summand and $p\tri\varphi_{i_1,i_2}$ on the second summand.
+
+It remains to check that $\eta$ and $\mu$ satisfy unitality and associativity. The base cases above imply unitality. To prove associativity, it suffices to show that the following diagram commutes for all $i_1,i_2,i_3$:
+\[
+\begin{tikzcd}
+	p\hoc{i_1}\tri p\hoc{i_2}\tri p\hoc{i_3}\ar[r]\ar[d]&
+	p\hoc{i_1}\tri p\hoc{i_2+i_3}\ar[d]\\
+	p\hoc{i_1+i_2}\tri p\hoc{i_3}\ar[r]&
+	p\hoc{i_1+i_2+i_3}
+\end{tikzcd}
+\]
+This is shown by a straightforward induction on $i_1$.
+\end{proof}
+
 
 %-------- Chapter --------%
 \chapter{The module structure $\free_p\otimes\cofree_q\to\free_{p\otimes q}$}
