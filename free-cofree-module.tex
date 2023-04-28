@@ -298,6 +298,7 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 \newcommand{\smset}{\Cat{Set}}
 \newcommand{\smcat}{\Cat{Cat}}
 \newcommand{\catsharp}{\Cat{Cat}^{\sharp}}
+\newcommand{\oorg}{\mathbb{O}\Cat{rg}}
 \newcommand{\ppolyfun}{\mathbb{P}\Cat{olyFun}}
 \newcommand{\ccatsharp}{\mathbb{C}\Cat{at}^{\sharp}}
 \newcommand{\ccatsharpdisc}{\mathbb{C}\Cat{at}^{\sharp}_{\tn{disc}}}
@@ -305,6 +306,7 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 \newcommand{\ccatsharpdisccon}{\mathbb{C}\Cat{at}^{\sharp}_{\tn{disc,con}}}
 \newcommand{\sspan}{\mathbb{S}\Cat{pan}}
 \newcommand{\polyfin}{\poly_{\finset}}
+\newcommand{\Mod}{\Cat{Mod}}
 
 \newcommand{\List}{\Fun{List}}
 \newcommand{\set}{\tn{-}\Cat{Set}}
@@ -668,7 +670,7 @@ It remains to check that $\epsilon$ and $\delta$ satisfy unitality and coassocia
 This can be shown by induction on $i_3$.
 \end{proof}
 
-\begin{theorem}
+\begin{theorem}\label{thm.cofree_comonad_comonad}
 There is an adjunction
 \[
 \adj{\catsharp}{U}{\cofree_-}{\poly}
@@ -760,13 +762,13 @@ p\hoc{0}\coloneqq\yon
 \qqand
 p\hoc{1+i}\coloneqq\yon+\left(p\tri p\hoc{i}\right)
 \]
-There is an inclusion map $\iota\hoc{0}\colon p\hoc{0}\to p\hoc{1}$, and if $\iota\hoc{i}\colon p\hoc{i}\to p\hoc{i+1}$ has been defined, then we can define $\iota\hoc{1+i}\coloneqq \yon+(p\tri\iota\hoc{i})$. Now define the polynomial
+There is a coproduct inclusion $\iota\hoc{0}\colon p\hoc{0}\to p\hoc{1}$, and if $\iota\hoc{i}\colon p\hoc{i}\to p\hoc{i+1}$ has been defined, then we can define $\iota\hoc{1+i}\coloneqq \yon+(p\tri\iota\hoc{i})$. Now define the polynomial
 \begin{equation}
 	\free_p\coloneqq\colim\left(\cdots\From{\iota\hoc{2}}p\hoc{2}\From{\iota\hoc{1}}p\hoc{1}\From{\iota\hoc{0}}p\hoc{0}\right)
 \end{equation}
-Note, by induction, that each $p\hoc{i}$ is finitary and that each $\iota\hoc{i}$ is cartesian, hence $\free_p$ is finitary and all maps $p\hoc{i}\to\free_p$ are cartesian. We refer to any composite of $\iota$'s as an $\iota$-inclusion.
+Note, by induction, that each $p\hoc{i}$ is finitary and that each $\iota\hoc{i}$ is cartesian, hence $\free_p$ is finitary and all maps $p\hoc{i}\to\free_p$ are cartesian. We refer to any composite of $\iota$'s, including the map $p\hoc{i}\to\free_p$, as an \emph{$\iota$-inclusion}.
 
-This polynomial comes equipped with a cartesian unit $\eta\colon\yon=p\hoc{0}\to\cofree_p$. We next construct the multiplication $\mu\colon\free_p\tri\free_p\to\free_p$. The $-\tri b$-operation preserves colimits of cartesian maps, and if $a$ is finitary the $a\tri-$ operation preserves filtered colimits. Hence we have
+This polynomial comes equipped with a cartesian unit $\eta\colon\yon=p\hoc{0}\to\cofree_p$. We next construct the multiplication $\mu\colon\free_p\tri\free_p\to\free_p$. The $(-\tri b)$-operation preserves colimits of cartesian maps, and if $a$ is finitary the $(a\tri-)$ operation preserves filtered colimits. Hence we have
 \[
 	\free_p\tri\free_p=
   \left(\colim_{i_1}p\hoc{i_1}\right)\tri\left(\colim_{i_2}p\hoc{i_2}\right)\cong
@@ -794,10 +796,48 @@ It remains to check that $\eta$ and $\mu$ satisfy unitality and associativity. T
 This is shown by a straightforward induction on $i_1$.
 \end{proof}
 
+Let $\Mod(\polyfin)$ denote the category monoids in $(\polyfin,\yon,\tri)$; we refer to its objects as \emph{finitary polynomial monads} or simply \emph{monads}.
+
+\begin{lemma}
+There is an adjunction
+\[
+\adj{\poly}{\free_-}{U}{\Mod(\polyfin)}
+\]
+where $U\colon\Mod(\polyfin)\to\poly$ is the forgetful functor $U(m,\eta,\mu)\coloneqq m$.
+\end{lemma}
+\begin{proof}
+We will abuse notation and denote the finitary polynomial monad $(m,\eta,\mu):\Mod(\polyfin)$ simply by its carrier $m$. We provide the unit and counit of the desired adjunction. The unit
+\[
+\eta_p\colon p\to\free_p
+\]
+is given by composing the coproduct inclusion $p\to\yon+p=p\hoc{1}$ with the $\iota$-inclusion $p\hoc{1}\to\free_{p}$. Since $\free_m$ is defined as a colimit, the counit
+\[\epsilon_m\colon\free_m\to m\]
+will be given by defining maps $\epsilon\hoc{i}\colon m\hoc{i}\to m$ commuting with inclusions $\iota\hoc{i}\colon m\hoc{i}\to m\hoc{i+1}$ for each $i:\nn$, and then showing that the resulting polynomial map $\epsilon_m$ is indeed a map of monads. Noting that $m\hoc{0}=\yon$, we define
+\[
+\epsilon\hoc{0}\coloneqq\eta
+\]
+Given $\epsilon\hoc{i}\colon m\hoc{i}\to m$, we define $\epsilon\hoc{1+i}$ as the composite
+\[
+	m\hoc{1+i}=
+  \yon+\left(m\tri m\hoc{i}\right)\To{\yon+(m\tri\epsilon\hoc{i})}
+	\yon+(m\tri m)\To{(\eta,\mu)}
+	m.
+\]
+Clearly, we have $\epsilon\hoc{0}=\epsilon\hoc{1}\circ\iota\hoc{0}$. It is easy to check that if $\epsilon\hoc{i}=\epsilon\hoc{1+i}\circ\iota\hoc{i}$ then $\epsilon\hoc{1+i}=\epsilon\hoc{2+i}\circ\iota\hoc{1+i}$. Thus we have constructed a polynomial map $\epsilon\colon \free_m\to m$. It clearly commutes with the unit, so it remains to show that $\epsilon$ commutes with the multiplication and that $\epsilon$ and $\eta$ satisfy the triangle identities. All this is analogous to the calculation in the proof of \cref{thm.cofree_comonad_comonad}.
+\end{proof}
+
+\section{The free monad monad $\free$}
+
+In the previous section we computed $\free_p$ for a finitary polynomial $p:\polyfin$. In this section, we extend the construction to an arbitrary polynomial.
+
+\begin{lemma}
+
+\end{lemma}
 
 %-------- Chapter --------%
 \chapter{The module structure $\free_p\otimes\cofree_q\to\free_{p\otimes q}$}
 
+\chapter{Application: the microservices operad $\oorg^\free$}
 
 \printbibliography
 \end{document}
