@@ -856,6 +856,8 @@ These are precisely the morphisms in the category $\diag_\circ(\poly)$ \cite{pes
 We claim that the composite $\poly\to\diag_\circ(\poly)\to\poly$ is naturally isomorphic to the identity. Since $\poly$ (resp.\ $\polyfin$) is the coproduct completion of $\smset\op$ (resp.\ $\finset\op$), this amounts to the fact that $\finset\to\smset$ is dense, i.e.\ that every set is the colimit of finite sets. 
 \end{proof}
 
+Note that for any $p:\poly$, the category $\VEF_p$ has finite limits; its final object is $p(1)$.
+
 \begin{proposition}
 There is a functor $\free_-\colon\poly\to\poly$ such that $\free_p$ has the structure of a Cartesian $\tri$-monoid for each finitary $p:\poly$,
 \[
@@ -880,10 +882,11 @@ The maps $\eta_q\colon\yon\to\free_q$ assemble into a map to their limit
 and one checks by hand that $\eta$ is cartesian. We next claim that there are isomorphisms
 \begin{align*}
 	\free_p\tri\free_p&\coloneqq
-  \left(\lim_{q:\VEF_p}\free_q\right)\tri\left(\lim_{q':\VEF_p}\free_{q'}\right)\\&\cong
-  \lim_{q:\VEF_p}\lim_{q':\VEF_p}\free_q\tri\free_{q'}\\&\cong
-  \lim_{q:\VEF_p}\free_q\tri\free_q
+  \left(\lim_{q_1:\VEF_p}\free_{q_1}\right)\tri\left(\lim_{q_2:\VEF_p}\free_{q_2}\right)\\&\cong
+  \lim_{q_1:\VEF_p}\lim_{q_2:\VEF_p}(\free_{q_1}\tri\free_{q_2})\\&\cong
+  \lim_{q:\VEF_p}(\free_q\tri\free_q)
 \end{align*}
+The first isomorphism arises from the fact that $\tri$ commutes with connected limits in both variables. There is an obvious map $\lim_{q_1,q_2}(\free_{q_1}\tri\free_{q_2})\to\lim_{q}(\free_q\tri\free_q)$; to prove the claim we need to find its inverse. Given vertical epimorphisms $p\to q_1$ and $p\to q_2$, there is a vertical epimorphism $p\to q_1\times_{p(1)}$**
 \end{proof}
 
 %-------- Chapter --------%
