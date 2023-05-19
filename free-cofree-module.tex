@@ -810,7 +810,7 @@ There is an adjunction
 \[
 \adj{\polyfin}{\free_-}{U}{\Mod(\polyfin)}
 \]
-where $U\colon\Mod(\polyfin)\to\poly$ is the forgetful functor $U(m,\eta,\mu)\coloneqq m$.
+where $U\colon\Mod(\polyfin)\to\polyfin$ is the forgetful functor $U(m,\eta,\mu)\coloneqq m$.
 \end{lemma}
 \begin{proof}
 We will abuse notation and denote the finitary polynomial monad $(m,\eta,\mu):\Mod(\polyfin)$ simply by its carrier $m$. We provide the unit and counit of the desired adjunction. The unit
@@ -886,7 +886,27 @@ and one checks by hand that $\eta$ is cartesian. We next claim that there are is
   \lim_{q_1:\VEF_p}\lim_{q_2:\VEF_p}(\free_{q_1}\tri\free_{q_2})\\&\cong
   \lim_{q:\VEF_p}(\free_q\tri\free_q)
 \end{align*}
-The first isomorphism arises from the fact that $\tri$ commutes with connected limits in both variables. There is an obvious map $\lim_{q_1,q_2}(\free_{q_1}\tri\free_{q_2})\to\lim_{q}(\free_q\tri\free_q)$; to prove the claim we need to find its inverse. Given vertical epimorphisms $p\to q_1$ and $p\to q_2$, there is a vertical epimorphism $p\to q_1\times_{p(1)}$**
+The first isomorphism arises from the fact that $\tri$ commutes with connected limits in both variables. For the second isomorphism, we note that given vertical epimorphisms $p\to q_1$ and $p\to q_2$, there is a vertical epimorphism $p\to q_1\times_{p(1)}q_2$ to their product; this gives rise to a functor $\VEF_p\times\VEF_p\to\VEF_p$. Moreover, for any $q:\VEF_p$ there is an isomorphism $q\times_{p(1)}q\cong q$, so the composite functor $\VEF_p\to\VEF_p\times\VEF_p\to\VEF_p$ is the identity and both factors are initial. Thus we see that the second map between limits is indeed an isomorphism. We can thus define the multiplication for $p$ as the limit of multiplications for the $q$'s:
+\[
+\free_p\tri\free_p\cong\lim_{q:\VEF_p}(\free_q\tri\free_q)\To{\lim\mu_q}\lim_{q:\VEF_p}\free_q\cong \free_p.
+\]
+Note that the limit of cartesian maps is cartesian, so $\mu$ is cartesian.
+
+We leave unitality and associativity to the reader.
+\end{proof}
+
+\begin{theorem}
+There is an adjunction
+\[
+\adj{\poly}{\free_-}{U}{\Mod(\poly)}
+\]
+where $U\colon\Mod(\poly)\to\poly$ is the forgetful functor $U(m,\eta,\mu)\coloneqq m$.
+\end{theorem}
+\begin{proof}
+We make extensive use of the finitary version, \cref{lemma.free_polyfin}. For a polynomial $p:\poly$, the unit $\eta_p\colon p\to\free_p=\lim_{p\to q}\free_q$ is given by the universal property. For a monad $(m,\eta,\mu)$, the counit map on carriers $\free_m\to m$ is given by
+\[
+\lim_{q:\VEF_m}\free_q\To{\epsilon_
+\]
 \end{proof}
 
 %-------- Chapter --------%
