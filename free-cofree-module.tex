@@ -44,7 +44,7 @@ citecolor=orange!50!black, urlcolor=orange!50!black, pdfencoding=unicode]{hyperr
 
 
 % biblatex %
-  \addbibresource{Library20230428.bib} 
+  \addbibresource{Library20231201.bib} 
 
 % hyperref %
   \hypersetup{final}
@@ -58,7 +58,7 @@ citecolor=orange!50!black, urlcolor=orange!50!black, pdfencoding=unicode]{hyperr
 
 % tikz %
 
-
+\DeclareUnicodeCharacter{0301}{*************************************}
 
   \usetikzlibrary{ 
   	cd,
@@ -282,6 +282,7 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 \newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
 
 \newcommand{\dual}[1]{{#1}^\vee}
+%\newcommand{\el}[1][]{\textstyle\int^{#1}}
 
 
 
@@ -316,14 +317,14 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 
 \newcommand{\yon}{\mathcal{y}}
 \newcommand{\poly}{\Cat{Poly}}
+\newcommand{\polycart}{\poly_\Cat{cart}}
 \newcommand{\tri}{\mathbin{\triangleleft}}
 \newcommand{\tripow}[1]{^{\tri #1}}
 \newcommand{\free}{\mathfrak{m}}
 \newcommand{\cofree}{\mathfrak{c}}
 \newcommand{\Cofree}{\mathfrak{C}}
 \newcommand{\tree}{\Set{Tree}}
-\newcommand{\diag}{\Cat{Diag}}
-\newcommand{\VEF}{\Cat{VEF}}
+\newcommand{\ext}{\fun{Ext}}
 
 \newcommand{\rt}{\texttt{root}}
 \newcommand{\br}{\tn{\texttt{branch}}}
@@ -360,6 +361,9 @@ replacement=\&]{}\ar[r,tick, "{#1}"]\&{}\end{tikzcd}}
 \newcommand{\coalg}{\tn{-}\Cat{Coalg}}
 
 \newcommand{\bic}[2]{{}_{#1}\Cat{Comod}_{#2}}
+
+
+\newcommand{\dnote}[1]{$\lozenge$\quad{\color{blue}David says: #1}\quad$\lozenge$}
 
 % ---- Changeable document parameters ---- %
 
@@ -442,7 +446,7 @@ The above is well-known. In this note, we provide what appears to be a novel rel
 \[
   \Phi_{p,q}\colon\free_p\otimes\cofree_q\to\free_{p\otimes q}
 \]
-This map presents $\free$ as a \emph{module} over $\cofree$, as \cite{https://ncatlab.org/nlab/show/module+over+a+monoidal+functor}, because it satisfies the action laws for $\cofree$'s lax monoidal structure ($\upsilon,\pi$):
+This map presents $\free$ as a \emph{module} over $\cofree$, as \cite{nlab:module_over_a_monoidal_functor}, because it satisfies the action laws for $\cofree$'s lax monoidal structure ($\upsilon,\pi$):
 %\[
 %\begin{tikzcd}
 %	\free_p\otimes\yon\ar[r,equal]\ar[d, "\free_p\otimes\upsilon"']&
@@ -833,86 +837,150 @@ Given $\epsilon\hoc{i}\colon m\hoc{i}\to m$, we define $\epsilon\hoc{1+i}$ as th
 Clearly, we have $\epsilon\hoc{0}=\epsilon\hoc{1}\circ\iota\hoc{0}$. It is easy to check that if $\epsilon\hoc{i}=\epsilon\hoc{1+i}\circ\iota\hoc{i}$ then $\epsilon\hoc{1+i}=\epsilon\hoc{2+i}\circ\iota\hoc{1+i}$. Thus we have constructed a polynomial map $\epsilon\colon \free_m\to m$. It clearly commutes with the unit, so it remains to show that $\epsilon$ commutes with the multiplication and that $\epsilon$ and $\eta$ satisfy the triangle identities. All this is analogous to the calculation in the proof of \cref{thm.cofree_comonad_comonad}.
 \end{proof}
 
-\section{The free monad monad $\free$}
-
-In the previous section we computed $\free_p$ for a finitary polynomial $p:\polyfin$. In this section, we extend the construction to an arbitrary polynomial.
-
-\begin{lemma}\label{lemma.vert_lim}
-Every polynomial is canonically isomorphic to the limit of its vertical maps to finitary polynomials.
-\end{lemma}
-\begin{proof}
-Let $p$ be a polynomial, and consider the comma category
-\[\VEF_p\coloneqq(\{p\}\down\polyfin^\tn{vert}),\]
-of vertical epimorphisms $p\to q$ with $q$ finitary; its objects are polynomials $q$ with the same positions as $p$ and for each $I:p(1)$ a subset $q[I]\ss p[I]$ of the directions. It comes with a functor $\VEF_p\to\poly$ sending $(p\to q)\mapsto q$. There is an orthogonal factorization system on $\poly$ whose left class is vertical epimorphisms. Given an arbitrary map $\varphi\colon p\to p'$ of polynomials, we can take any map $p'\to q'$ and consider the vertical-epimorphic part of the composite $p\to p'\to q'$. Thus we have a diagram of the following form:
-\[
-\begin{tikzcd}[column sep=0pt]
-	\VEF_p\ar[dr, "" name=p]&&\VEF_{p'}\ar[dl, ""' name=p']\ar[ll]\\&
-	\poly
-	\ar[from=p, to=p', Rightarrow]
-\end{tikzcd}
-\]
-These are precisely the morphisms in the category $\diag_\circ(\poly)$ \cite{peschke2021diagrams}, hence we have a functor $\VEF\colon\poly\to\diag_\circ(\poly)$. Since $\poly$ is complete, taking limits defines a functor $\lim\colon\diag_\circ(\poly)\to\poly$. 
-
-We claim that the composite $\poly\to\diag_\circ(\poly)\to\poly$ is naturally isomorphic to the identity. Since $\poly$ (resp.\ $\polyfin$) is the coproduct completion of $\smset\op$ (resp.\ $\finset\op$), this amounts to the fact that $\finset\to\smset$ is dense, i.e.\ that every set is the colimit of finite sets. 
-\end{proof}
-
-Note that for any $p:\poly$, the category $\VEF_p$ has finite limits; its final object is $p(1)$.
-
-\begin{proposition}
-There is a functor $\free_-\colon\poly\to\poly$ such that $\free_p$ has the structure of a Cartesian $\tri$-monoid for each finitary $p:\poly$,
-\[
-\yon\to\free_p
-\qqand
-\free_p\tri\free_p\to\free_p.
-\qedhere
-\]
-\end{proposition}
-\begin{proof}
-For $p:\poly$, the functor $\VEF_p\to\poly$ from \cref{lemma.vert_lim} factors through $\VEF_p\to\polyfin$. Composing with $\free_-\colon\polyfin\to\Mod(\polyfin)$ from \cref{lemma.free_polyfin} gives a functor $\VEF_p\to\Mod(\polyfin)$,
-sending each $p\to q$ to the monad $(\free_q,\eta_q,\mu_q)$. Define the polynomial
-\[\free_p\coloneqq\lim_{(p\to q)\in\VEF_p}\free_q.\]
-We will define a unit $\yon\to\free_p$ and a multiplication $\free_p\tri\free_p\to\free_p$ satisfying the usual laws. 
-
-The maps $\eta_q\colon\yon\to\free_q$ assemble into a map to their limit
-\[
-  \eta\colon\yon\To{(\eta_q)_{q:\VEF_p}}
-  \left(\lim_{q:\VEF_p}\free_q\right)=
-  \free_p
-\]
-and one checks by hand that $\eta$ is cartesian. We next claim that there are isomorphisms
-\begin{align*}
-	\free_p\tri\free_p&\coloneqq
-  \left(\lim_{q_1:\VEF_p}\free_{q_1}\right)\tri\left(\lim_{q_2:\VEF_p}\free_{q_2}\right)\\&\cong
-  \lim_{q_1:\VEF_p}\lim_{q_2:\VEF_p}(\free_{q_1}\tri\free_{q_2})\\&\cong
-  \lim_{q:\VEF_p}(\free_q\tri\free_q)
-\end{align*}
-The first isomorphism arises from the fact that $\tri$ commutes with connected limits in both variables. For the second isomorphism, we note that given vertical epimorphisms $p\to q_1$ and $p\to q_2$, there is a vertical epimorphism $p\to q_1\times_{p(1)}q_2$ to their product; this gives rise to a functor $\VEF_p\times\VEF_p\to\VEF_p$. Moreover, for any $q:\VEF_p$ there is an isomorphism $q\times_{p(1)}q\cong q$, so the composite functor $\VEF_p\to\VEF_p\times\VEF_p\to\VEF_p$ is the identity and both factors are initial. Thus we see that the second map between limits is indeed an isomorphism. We can thus define the multiplication for $p$ as the limit of multiplications for the $q$'s:
-\[
-\free_p\tri\free_p\cong\lim_{q:\VEF_p}(\free_q\tri\free_q)\To{\lim\mu_q}\lim_{q:\VEF_p}\free_q\cong \free_p.
-\]
-Note that the limit of cartesian maps is cartesian, so $\mu$ is cartesian.
-
-We leave unitality and associativity to the reader.
-\end{proof}
-
-\begin{theorem}
-There is an adjunction
-\[
-\adj{\poly}{\free_-}{U}{\Mod(\poly)}
-\]
-where $U\colon\Mod(\poly)\to\poly$ is the forgetful functor $U(m,\eta,\mu)\coloneqq m$.
-\end{theorem}
-\begin{proof}
-We make extensive use of the finitary version, \cref{lemma.free_polyfin}. For a polynomial $p:\poly$, the unit $\eta_p\colon p\to\free_p=\lim_{p\to q}\free_q$ is given by the universal property. For a monad $(m,\eta,\mu)$, the counit map on carriers $\free_m\to m$ is given by
-\[
-\lim_{q:\VEF_m}\free_q\To{\epsilon_
-\]
-\end{proof}
 
 %-------- Chapter --------%
 \chapter{The module structure $\free_p\otimes\cofree_q\to\free_{p\otimes q}$}
 
+%-------- Chapter --------%
 \chapter{Application: the microservices operad $\oorg^\free$}
+
+
+%-------- Chapter --------%
+\appendix
+\chapter{Lemmas on $\poly$}
+\dnote{Incorporate the following into the doc, or keep it here.}
+
+\begin{lemma}\label{lemma.ext_ff}
+A polynomial map $p\to q$ is an isomorphism iff for all sets $X$, the induced function $p\tri X\to q\tri X$ is a bijection.
+\end{lemma}
+\begin{proof}
+This is just a restatement of the fact that $\ext\colon\poly\to\smset^\smset$ is fully faithful; indeed, $\ext(p)(X)\cong p\tri X$.
+\end{proof}
+
+The coproduct completion $\Sigma\cat{C}$ of a category $\cat{C}$ has as objects pairs $(S,C)$ where $S:\smset$ and $C\colon S\to\cat{C}$ is a discrete diagram, and it has as morphisms lax triangles
+\[
+\begin{tikzcd}[column sep=10pt]
+	S_1\ar[rr, "f"]\ar[dr, bend right=15pt, "C_1"', "" name=C1]&&
+	S_2\ar[dl, bend left=15pt, "C_2", ""' name=C2]\\&
+	\cat{C}
+	\ar[from=C1,to=C2|-C1, shorten=5pt, Rightarrow, "f^\flat"]
+\end{tikzcd}
+\]
+A diagram $\cat{I}\to\Sigma\cat{C}$ consists of a pair $(S,C)$, where $S\colon\cat{I}\to\smset$ is a diagram and $C\colon\el S\to\cat{C}$ is a functor  from the category of elements of $S$ to $\cat{C}$. 
+
+\begin{lemma}\label{lemma.coprod_comp_colimits}
+Let $\cat{C}$ be a category and let $\Sigma\cat{C}$ be its coproduct completion. If $\cat{C}$ has $\cat{I}$-shaped colimits, then so does $\Sigma\cat{C}$, and they are computed as follows.
+
+Given a diagram $(S,C)\colon\cat{I}\to\Sigma\cat{C}$, consider the Kan extension
+\[
+\begin{tikzcd}
+	\el S\ar[r, "C", ""' name=C]\ar[d]&
+	\cat{C}\\
+	\pi_0(\el S)\ar[ur, bend right=20pt, "\fun{Lan}"', "" name=colim]
+	\ar[from=C, to=C|-colim, Rightarrow]
+\end{tikzcd}
+\]
+where $\pi_0\colon\smcat\to\smset$ is the connected components reflection. Then the colimit is given by
+\begin{equation}\label{eqn.colim_pi0_lan}
+\colim(S,C)\cong(\pi_0(\el S),\fun{Lan}).
+\end{equation}
+For each element $s_0:\pi_0(\el S)$, its image object $\fun{Lan}(s_0):\ob\cat{C}$ is given by the colimit over all $(i,s_i)\mapsto s$ of $C(s_i)$.
+\end{lemma}
+\begin{proof}
+First consider the case $\cat{C}=1$, so that $\Sigma\cat{C}\cong\smset$. We need to check that for any $S\colon\cat{I}\to\smset$, there is a bijection
+\begin{equation}\label{eqn.colim_pi0}
+\colim S\cong\pi_0(\el S).
+\end{equation}
+This follows from the fact that the inclusion of diagrams of sets into diagrams of categories is a left adjoint, the Grothendieck construction taking diagrams of categories to categories is a left adjoint, and $\pi_0$ taking categories to sets is a left adjoint.
+
+Given $T:\smset$, a discrete diagram $D\colon T\to\cat{C}$, and diagrams
+$(S_i,C_i)\to(T,D)$, coherently over $i:\cat{I}$, one obtains a diagram as left, which factors uniquely as right:
+\[
+\begin{tikzcd}[column sep=10pt]
+	\el S\ar[rr]\ar[dr, bend right=15pt, "C"', "" name=C]&&
+	T\ar[dl, bend left=15pt, "D", ""' name=D]\\&
+	\cat{C}
+	\ar[from=C, to=C-|D, shorten=5pt, Rightarrow]
+\end{tikzcd}
+\hspace{.6in}
+\begin{tikzcd}
+	\el S\ar[r]\ar[dr, bend right=15pt, "C"', "" name=C]&
+	\pi_0(\el S)\ar[d, "\fun{Lan}" description, "" name=L, ""' name=L']\ar[r]&
+	T\ar[dl, bend left=15pt, "D", ""' name=D]\\&
+	\cat{C}
+	\ar[from=C|-L', to=L', shorten=5pt, Rightarrow]
+	\ar[from=L, to=L-|D, shorten=5pt, Rightarrow]
+\end{tikzcd}
+\]
+This gives \eqref{eqn.colim_pi0_lan}. For the last statement, note that since $1\to\pi_0(\el S)$ is a map of sets, the pullback of categories
+\[
+\begin{tikzcd}
+  \bullet\ar[r]\ar[d]\ar[dr, phantom, very near start, "\lrcorner"]&
+  \el S\ar[d]\\
+  1\ar[r, "s_0"']&
+  \pi_0(\el S)
+\end{tikzcd}
+\]
+is also a comma square. Hence it is exact in the sense of \cite{nlab:exact_square}, completing the proof.
+\end{proof}
+
+\cref{lemma.coprod_comp_colimits} provides a formula for computing colimits in $\poly$, since $\poly\cong\Sigma\smset\op$ is the coproduct completion of $\smset\op$. Namely, the position-set of the colimit of $p\colon\cat{I}\to\poly$ is given by the colimit $\colim_ip_i(1)$ of the position-sets, and the directions at a position $P:\colim_ip_i(1)$ are given by the limit (taken in $\smset$, i.e.\ the colimit taken in $\smset\op$) of the associated connected diagram $\cat{E}_P$ of direction sets.
+\[
+\begin{tikzcd}
+	\cat{E}_P\ar[r]\ar[d]&
+	\el p(1)\ar[r, "{p[-]}", ""' name=C]\ar[d]&
+	\smset\op\\
+	1\ar[r, "P"']&
+	\colim_ip_i(1)\ar[ur, bend right=20pt, "\fun{Lan}"', "" name=colim]
+	\ar[from=C, to=C|-colim, Rightarrow]\ar[ul, phantom, very near end, "\lrcorner"]
+\end{tikzcd}
+\]
+
+\begin{proposition}\label{prop.polycart_reflect}
+The inclusion $\polycart\to\poly$ reflects all colimits.
+\end{proposition}
+\begin{proof}
+Suppose given a category $I$, a functor $p\colon I\to\polycart$, a polynomial $\ol{p}:\poly$, and cartesian maps $\varphi_i\colon p_i\to \ol{p}$ forming a cone. Suppose further that in $\poly$ it is a colimit cone. To see that it is a colimit cone in $\polycart$ we need only check that for any $q$ and cone $\psi_i\colon p_i\to q$ in $\polycart$, the induced map $\psi\colon\ol{p}\to q$ in $\poly$ is in fact in $\polycart$, i.e.\ for any position $P:\ol{p}(1)$, the induced function $\psi^\sharp_P\colon q[\varphi(P)]\to\ol{p}[P]$ is bijective. 
+
+By \cref{lemma.coprod_comp_colimits}, the position-set of a colimit is the colimit of the position-sets for any diagram of polynomials, meaning there exists some $i:I$ and $P_i:p_i(1)$ representing $P$, i.e.\ with $\varphi_i(P_i)=P$. Since $p_i\to\ol{p}$ is cartesian, we have a commuting triangle of functions $q[\varphi(P)]\to\ol{p}[P]\to p_i[P_i]$ of which two are bijections; it follows that the required one is as well.
+\end{proof}
+
+\begin{proposition}\label{prop.polycart_colimits}
+The inclusion $\polycart\to\poly$ creates coproducts and filtered colimits. Moreover, the composite
+\[
+\polycart\to\poly\To{\ext}\smset^\smset
+\]
+creates coproducts and filtered colimits.
+\end{proposition}
+\begin{proof}
+The functor $\ext\colon\poly\to\smset^\smset$ is fully faithful and hence reflects all colimits; by \cref{prop.polycart_reflect}, $\polycart\to\poly$ does too. It suffices to show that $\polycart$ has coproducts and filtered colimits, because and that the two functors $\polycart\to\poly$ and $\polycart\to\smset^\smset$ preserve them.
+
+Coproduct inclusions of polynomials are cartesian, so the coproduct cone exists in $\polycart$, and hence it is a coproduct. Since $\ext$ preserves coproducts, this concludes the case for coproducts.
+
+By \cite{Adamek.Rosicky:1994a}, a category has (resp.\ a functor preserves) all filtered colimits iff it has (resp.\ preserves) all directed colimits, so let $\cat{I}$ be a directed category and $p\colon\cat{I}\to\polycart$ a directed sequence of polynomials and cartesian maps. Then the induced map $\cat{I}\to\poly$ has a colimit, say $\ol{p}$, and it is easy to check that all the structure maps $p_i\to\ol{p}$ are cartesian. Hence $\ol{p}\cong\colim_ip_i$ is a colimit in $\polycart$, and it is preserved by the inclusion.
+
+It remains to check that $\ol{p}$ is a colimit in $\smset^\smset$. That is, we need to check that for any $X:\smset$, the function
+\[
+\sum_{P:\pi_0(\el p)}\colim_{e:\cat{E}_P}X^{p[e]}\too
+\sum_{P:\pi_0(\el p)}X^{\lim_{e:\cat{E}_P}p[e]}
+\]
+is a bijection. Choose any $P$; it suffices to show that $\colim_{e:\cat{E}_P} X^{p[e]}\to X^{\lim_{e:\cat{E}_P}p[e]}$ is a bijection. But $\cat{E}_P$ is filtered and for any $e\to e'$ in $\cat{E}_P$, the map $p[e']\to p[e]$ is a bijection. Hence we can pick any object $e':\cat{E}_P$, replace all $p_e$ with $p_{e'}$, and have an isomorphic diagram. Now the colimit and limit are both constant, meaning that both sides of the desired map are isomorphic to $X^{p[e']}$, and hence to each other.
+\end{proof}
+
+\begin{corollary}
+For any polynomial $q$, filtered category $\cat{I}$, and diagram $p\colon\cat{I}\to\polycart$, the natural map
+\[
+\colim_{i:I}(p_i\tri q)\to(\colim_{i:I}p_i)\tri q
+\]
+is an isomorphism in $\poly$.
+\end{corollary}
+\begin{proof}
+By \cref{lemma.ext_ff} it suffices to show that the function $\colim_{i:I}(p_i\tri q)\tri X\to(\colim_{i:I}p_i)\tri q\tri X$ is a bijection for any $X:\smset$. This is just two uses of \cref{prop.polycart_colimits}:
+\[
+\colim_{i:I}(p_i\tri q)\tri X\cong\colim_{i:I}(p_i\tri q\tri X)\cong(\colim_{i:I}p_i)\tri q\tri X.
+\qedhere
+\]
+\end{proof}
 
 \printbibliography
 \end{document}
